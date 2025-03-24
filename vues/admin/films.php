@@ -58,7 +58,7 @@
                             <td><?= date('d/m/Y', strtotime($film['dateSortie'])) ?></td>
                             <td><?= $film['nomRealisateur'] . ' ' . $film['prenomRealisateur'] ?></td>
                             <td class="actions">
-                                <a href="<?= URL ?>films/show/<?= $film['idFilm'] ?>" class="btn-view" title="Voir"><i class="fas fa-eye"></i></a>
+                                <a href="<?= URL ?>index.php?page=films/show&id=<?= $film['idFilm'] ?>" class="btn-view" title="Voir"><i class="fas fa-eye"></i></a>
                                 <a href="<?= URL ?>admin/editFilm/<?= $film['idFilm'] ?>" class="btn-edit" title="Modifier"><i class="fas fa-edit"></i></a>
                                 <a href="#" class="btn-delete" data-id="<?= $film['idFilm'] ?>" data-title="<?= $film['titre'] ?>" title="Supprimer"><i class="fas fa-trash"></i></a>
                             </td>

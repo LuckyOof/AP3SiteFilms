@@ -30,6 +30,11 @@ class FilmModele extends PDOModel {
             $imageName = basename($imageName);
         }
         
+        // Si l'image contient l'ancien chemin /ressources/images/affiches/, extraire juste le nom du fichier
+        if (strpos($imageName, '/ressources/images/affiches/') === 0) {
+            $imageName = basename($imageName);
+        }
+        
         // Retourner juste le nom de l'image pour que les templates puissent ajouter le préfixe URL
         return $imageName;
     }
@@ -482,7 +487,16 @@ class FilmModele extends PDOModel {
             $stmt = $this->getBdd()->prepare($sql);
             $stmt->execute();
             
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $films = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Formater les chemins d'images pour chaque film
+            foreach ($films as &$film) {
+                if (isset($film['image'])) {
+                    $film['urlAffiche'] = $this->formatImagePath($film['image']);
+                }
+            }
+            
+            return $films;
         } catch (PDOException $e) {
             throw new Exception("Erreur lors de la récupération de tous les films : " . $e->getMessage());
         }

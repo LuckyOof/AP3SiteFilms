@@ -206,12 +206,25 @@ if(isset($_SESSION['form_data'])) {
         const previewContainer = document.createElement('div');
         previewContainer.className = 'image-preview';
         previewContainer.style.display = 'none';
-        previewContainer.innerHTML = '<img id="imagePreview" src="#" alt="Prévisualisation" />';
-        imageInput.parentNode.insertBefore(previewContainer, imageInput.nextSibling);
+        previewContainer.innerHTML = '<img id="imagePreview" src="#" alt="Prévisualisation" style="max-width: 300px; margin-top: 10px;" />';
+        
+        // Insérer le conteneur après l'input
+        if (imageInput.nextSibling) {
+            imageInput.parentNode.insertBefore(previewContainer, imageInput.nextSibling);
+        } else {
+            imageInput.parentNode.appendChild(previewContainer);
+        }
         
         const imagePreview = document.getElementById('imagePreview');
         
         imageInput.addEventListener('change', function() {
+            // Supprimer toute prévisualisation existante à chaque changement
+            document.querySelectorAll('.image-preview').forEach(preview => {
+                if (preview !== previewContainer) {
+                    preview.remove();
+                }
+            });
+            
             if (this.files && this.files[0]) {
                 const reader = new FileReader();
                 
