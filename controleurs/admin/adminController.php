@@ -21,18 +21,27 @@ class AdminController {
         $this->realisateurModele = new RealisateurModele();
         $this->utilisateurModele = new UtilisateurModele();
         $this->avisModele = new AvisModele();
-        
-        // Vérifier si l'utilisateur est administrateur
+    }
+    
+    /**
+     * Vérifie si l'utilisateur est administrateur
+     * @return bool
+     */
+    private function checkAdmin() {
         if (!isset($_SESSION['user']) || !$_SESSION['user']['estAdmin']) {
-            header('Location: ' . URL);
+            $_SESSION['message'] = "Vous devez être administrateur pour accéder à cette section.";
+            $_SESSION['message_type'] = "danger";
+            header('Location: ' . URL . 'login');
             exit();
         }
+        return true;
     }
     
     /**
      * Affiche la liste des films pour l'administration
      */
     public function films() {
+        $this->checkAdmin();
         $films = $this->filmModele->getAllFilms();
         
         $data_page = [
@@ -56,6 +65,7 @@ class AdminController {
      * Affiche le formulaire d'ajout de film
      */
     public function addFilm() {
+        $this->checkAdmin();
         // Récupérer les réalisateurs, genres, etc. pour les listes déroulantes
         $realisateurs = $this->realisateurModele->getAllRealisateurs();
         $genres = $this->genreModele->getAllGenres();
@@ -84,6 +94,7 @@ class AdminController {
      * Traite le formulaire d'ajout de film
      */
     public function saveFilm() {
+        $this->checkAdmin();
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: ' . URL . 'admin/films');
             exit();
@@ -181,6 +192,7 @@ class AdminController {
      * Affiche le formulaire de modification d'un film
      */
     public function editFilm($idFilm) {
+        $this->checkAdmin();
         $film = $this->filmModele->getFilmById($idFilm);
         
         if (!$film) {
@@ -224,6 +236,7 @@ class AdminController {
      * Traite le formulaire de modification de film
      */
     public function updateFilm() {
+        $this->checkAdmin();
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: ' . URL . 'admin/films');
             exit();
@@ -341,6 +354,7 @@ class AdminController {
      * Supprime un film
      */
     public function deleteFilm($idFilm) {
+        $this->checkAdmin();
         // Vérifier si le film existe
         $film = $this->filmModele->getFilmById($idFilm);
         
@@ -382,6 +396,7 @@ class AdminController {
      * Affiche le tableau de bord d'administration
      */
     public function dashboard() {
+        $this->checkAdmin();
         try {
             // Récupérer les statistiques
             $totalFilms = count($this->filmModele->getAllFilms());
