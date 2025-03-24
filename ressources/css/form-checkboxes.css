@@ -1,0 +1,130 @@
+/* Styles pour les groupes de cases à cocher (acteurs et genres) */
+.checkbox-group {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Style pour les éléments cliquables (acteurs et genres) */
+.actor-item,
+.genre-item {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    margin: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.actor-item:hover,
+.genre-item:hover {
+    background-color: #e0e0e0;
+}
+
+.actor-item.selected {
+    background-color: #3498db; /* bleu */
+    color: white;
+}
+
+.genre-item.selected {
+    background-color: #27ae60; /* vert */
+    color: white;
+}
+
+/* Cacher les cases à cocher */
+.hidden-checkbox {
+    display: none;
+}
+
+/* Style pour les cases à cocher des genres (on les garde visibles) */
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    padding: 5px;
+    transition: background-color 0.2s;
+    border-radius: 3px;
+}
+
+.checkbox-item:hover {
+    background-color: #eaeaea;
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.checkbox-item label {
+    cursor: pointer;
+    flex: 1;
+    margin-bottom: 0;
+    font-weight: normal;
+}
+
+/* Style pour les cases à cocher cochées */
+.checkbox-item input[type="checkbox"]:checked + label {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* Style pour l'upload de fichier */
+.file-upload {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.file-upload input[type="file"] {
+    margin-right: 10px;
+}
+
+#fileName {
+    font-size: 14px;
+    color: #666;
+    font-style: italic;
+}
+
+/* Style pour la prévisualisation d'image */
+.image-preview {
+    margin: 10px 0;
+    text-align: center;
+}
+
+.image-preview img {
+    max-width: 200px;
+    max-height: 300px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Style pour l'image actuelle */
+.current-image {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.current-image p {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #666;
+    font-weight: bold;
+}
+
+.current-image img.thumbnail {
+    max-width: 150px;
+    max-height: 200px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}

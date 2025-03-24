@@ -1,0 +1,285 @@
+/* Styles pour le systu00e8me d'avis inspiru00e9 de Reddit */
+
+/* Conteneur principal des avis */
+.avis-container {
+    margin-top: 30px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+}
+
+.avis-container h2 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #1c1c1c;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #edeff1;
+}
+
+/* Message de notification */
+#messageContainer {
+    padding: 8px 16px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    display: none;
+    font-size: 14px;
+}
+
+#messageContainer.success {
+    background-color: #f6fdf6;
+    color: #1a7d1a;
+    border: 1px solid #d2e9d2;
+}
+
+#messageContainer.error {
+    background-color: #fff6f6;
+    color: #cf3939;
+    border: 1px solid #f2d2d2;
+}
+
+/* Formulaire d'avis */
+.avis-form {
+    background-color: #f8f9fa;
+    border: 1px solid #edeff1;
+    border-radius: 4px;
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+.avis-form h3 {
+    font-size: 16px;
+    font-weight: 500;
+    color: #1c1c1c;
+    margin-bottom: 12px;
+}
+
+.avis-stars {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.avis-star {
+    font-size: 20px;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s;
+    margin-right: 4px;
+}
+
+.avis-star:hover, .avis-star.selected {
+    color: #ff4500; /* Couleur orange de Reddit */
+}
+
+.avis-textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px;
+    border: 1px solid #edeff1;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    background-color: #fff;
+}
+
+.avis-textarea:focus {
+    border-color: #0079d3;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 121, 211, 0.2);
+}
+
+.avis-submit {
+    background-color: #e50914; /* Rouge Netflix */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.avis-submit:hover {
+    background-color: #b2070f;
+}
+
+.avis-submit.edit-mode {
+    background-color: #0079d3;
+}
+
+.avis-submit.edit-mode:hover {
+    background-color: #005fa3;
+}
+
+/* Message pour se connecter */
+.login-prompt {
+    background-color: #f8f9fa;
+    border: 1px solid #edeff1;
+    border-radius: 4px;
+    padding: 16px;
+    margin-bottom: 24px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.login-prompt a {
+    color: #e50914;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-prompt a:hover {
+    text-decoration: underline;
+}
+
+/* Liste des avis */
+.avis-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.avis-item {
+    background-color: #fff;
+    border: 1px solid #edeff1;
+    border-radius: 4px;
+    padding: 12px 16px;
+    position: relative;
+}
+
+.avis-item:hover {
+    border-color: #d7d9dc;
+}
+
+.avis-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: #787c7e;
+}
+
+.avis-user {
+    font-weight: 600;
+    color: #1c1c1c;
+    margin-right: 8px;
+}
+
+.avis-date {
+    margin-right: 8px;
+}
+
+.avis-rating {
+    color: #e50914;
+    margin-right: auto;
+}
+
+.avis-content {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #000000; /* Noir pour le texte des commentaires */
+    word-break: break-word;
+}
+
+.no-avis {
+    text-align: center;
+    padding: 32px 16px;
+    color: #787c7e;
+    font-style: italic;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border: 1px dashed #edeff1;
+}
+
+/* Bouton de suppression et d'u00e9dition */
+.delete-avis, .edit-avis {
+    background: none;
+    border: none;
+    color: #878a8c;
+    cursor: pointer;
+    font-size: 12px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    padding: 4px;
+    margin-left: 4px;
+}
+
+.delete-avis:hover {
+    opacity: 1;
+    color: #ea0027;
+}
+
+.edit-avis:hover {
+    opacity: 1;
+    color: #0079d3;
+}
+
+/* Bouton d'annulation */
+.cancel-edit {
+    background-color: #f2f2f2;
+    color: #666;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background-color 0.2s;
+    margin-left: 8px;
+}
+
+.cancel-edit:hover {
+    background-color: #e0e0e0;
+}
+
+/* Note moyenne */
+.movie-rating {
+    display: flex;
+    align-items: center;
+    margin-left: 16px;
+    font-size: 14px;
+}
+
+.movie-rating-stars {
+    color: #e50914;
+    margin-right: 8px;
+}
+
+.movie-rating-average {
+    font-weight: 600;
+    margin-right: 4px;
+}
+
+.movie-rating-count {
+    color: #787c7e;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .movie-rating {
+        margin-left: 0;
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+    
+    .avis-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .avis-user, .avis-date, .avis-rating {
+        margin-bottom: 4px;
+    }
+    
+    .delete-avis {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+    }
+}

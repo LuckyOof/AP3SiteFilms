@@ -1,0 +1,146 @@
+/* Conteneur principal du formulaire */
+.add-film-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.add-film-container h2 {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Formulaire */
+.add-film-form {
+    display: grid;
+    gap: 20px;
+}
+
+.add-film-form label {
+    font-size: 1.1em;
+    color: #555;
+}
+
+.add-film-form input,
+.add-film-form textarea,
+.add-film-form select {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.add-film-form textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.add-film-form button {
+    padding: 15px 30px;
+    background-color: #6200ee;
+    color: white;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 100%;
+}
+
+.add-film-form button:hover {
+    background-color: #3700b3;
+}
+
+/* Messages de succès / erreur */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.alert.success {
+    background-color: #4caf50;
+    color: white;
+}
+
+.alert.error {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Section pour les champs supplémentaires */
+.add-film-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.add-film-section label {
+    font-weight: 500;
+}
+
+.add-film-section .additional-fields {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+/* Éléments de formulaire supplémentaires */
+.add-film-section input[type="number"] {
+    width: 48%;
+}
+
+.add-film-section input[type="date"] {
+    width: 48%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .add-film-container {
+        padding: 15px;
+        margin: 20px;
+    }
+
+    .add-film-form {
+        gap: 15px;
+    }
+
+    .add-film-form button {
+        font-size: 1em;
+    }
+
+    .add-film-section .additional-fields {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .add-film-section input[type="number"],
+    .add-film-section input[type="date"] {
+        width: 100%;
+    }
+}
+
+/* Animation pour l'apparition du formulaire */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.add-film-container {
+    animation: fadeIn 0.5s ease-out;
+}

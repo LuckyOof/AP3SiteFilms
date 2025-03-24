@@ -1,0 +1,718 @@
+.profile-container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.profile-header h2 {
+    margin: 0;
+    color: #333;
+}
+
+.edit-profile-btn {
+    background: #6200ee;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.3s ease;
+}
+
+.edit-profile-btn:hover {
+    background: #3700b3;
+}
+
+.logout {
+    background: #6200ee;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.3s ease;
+    font-size: 1.2em;
+    margin-left: 37.5%;
+    width: 25%;
+}
+
+.logout a{
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.logout:hover {
+    background: #3700b3;
+}
+
+.profile-info, .profile-form {
+    margin-bottom: 30px;
+}
+
+.info-group {
+    margin-bottom: 15px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.info-group label {
+    font-weight: 500;
+    color: #666;
+    margin-right: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #6200ee;
+    outline: none;
+    box-shadow: 0 0 5px rgba(98, 0, 238, 0.2);
+}
+
+.password-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.password-section h3 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.save-btn, .cancel-btn {
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.save-btn {
+    background: #6200ee;
+    color: white;
+    border: none;
+}
+
+.save-btn:hover {
+    background: #3700b3;
+}
+
+.cancel-btn {
+    background: #fff;
+    color: #6200ee;
+    border: 1px solid #6200ee;
+}
+
+.cancel-btn:hover {
+    background: #f8f9fa;
+}
+
+.hidden {
+    display: none;
+}
+
+.success {
+    background: #d4edda;
+    color: #155724;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+/* Section des avis */
+.reviews-section {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px solid #eee;
+}
+
+.reviews-section h3 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.reviews-list {
+    display: grid;
+    gap: 20px;
+}
+
+.review-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.review-header h4 {
+    margin: 0;
+    color: #333;
+    font-size: 1.1em;
+}
+
+.review-rating {
+    color: #6200ee;
+    font-weight: 500;
+}
+
+.review-content {
+    color: #666;
+}
+
+.review-content p {
+    margin: 0 0 10px 0;
+}
+
+.review-date {
+    font-size: 0.9em;
+    color: #999;
+}
+
+.no-reviews {
+    text-align: center;
+    color: #666;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+/* Section Watchlist */
+.watchlist-section {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px solid #eee;
+}
+
+.watchlist-section h3 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.watchlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.film-card {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.film-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.film-image {
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+
+.film-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.no-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    color: #666;
+}
+
+.film-info {
+    padding: 15px;
+}
+
+.film-info h4 {
+    margin: 0 0 10px 0;
+    color: #333;
+    font-size: 1.1em;
+}
+
+.film-date {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+.film-description {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.film-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.view-btn, .remove-watchlist-btn {
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    flex: 1;
+}
+
+.view-btn {
+    background: #6200ee;
+    color: white;
+    border: none;
+}
+
+.view-btn:hover {
+    background: #3700b3;
+}
+
+.remove-watchlist-btn {
+    background: #fff;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+}
+
+.remove-watchlist-btn:hover {
+    background: #dc3545;
+    color: #fff;
+}
+
+.no-watchlist {
+    text-align: center;
+    color: #666;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+/* Watchlist Header */
+.watchlist-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.watchlist-stats {
+    display: flex;
+    gap: 20px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    color: #333;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-item i {
+    color: #6200ee;
+    font-size: 1.2em;
+}
+
+.stat-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Filtres et tri */
+.watchlist-controls {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: 0.1s;
+}
+
+.filters form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-group label {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.filter-group select,
+.filter-group input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.filter-group select:hover,
+.filter-group input:hover {
+    border-color: #6200ee;
+}
+
+.filter-group select:focus,
+.filter-group input:focus {
+    border-color: #6200ee;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(98, 0, 238, 0.1);
+}
+
+.duree-filter .duree-inputs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.duree-filter .duree-inputs span {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.duree-filter input {
+    width: 80px;
+}
+
+.sort-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sort-group select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.apply-filters,
+.reset-filters {
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+}
+
+.apply-filters {
+    background: #6200ee;
+    color: white;
+    border: none;
+}
+
+.apply-filters:hover {
+    background: #3700b3;
+}
+
+.reset-filters {
+    background: #fff;
+    color: #666;
+    border: 1px solid #ddd;
+}
+
+.reset-filters:hover {
+    background: #f8f9fa;
+    border-color: #6200ee;
+    color: #6200ee;
+}
+
+/* Statistiques détaillées */
+.watchlist-detailed-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin: 30px 0;
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: 0.2s;
+}
+
+.stats-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.stats-card h3 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+}
+
+.stats-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.chart-bar {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.bar-label {
+    width: 100px;
+    font-size: 0.9em;
+    color: #666;
+    text-align: right;
+}
+
+.bar-container {
+    flex: 1;
+    height: 24px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.bar {
+    height: 100%;
+    background: linear-gradient(45deg, #6200ee, #9c47ff);
+    border-radius: 12px;
+    position: relative;
+    transition: width 0.3s ease;
+    min-width: 24px;
+}
+
+.bar-value {
+    position: absolute;
+    right: 8px;
+    color: white;
+    font-size: 0.8em;
+    line-height: 24px;
+}
+
+.chart-bar:hover .bar {
+    filter: brightness(1.1);
+}
+
+.chart-bar:hover .bar-label {
+    color: #6200ee;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.watchlist-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.watchlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: 0.3s;
+}
+
+/* Améliorations responsive */
+@media (max-width: 768px) {
+    .watchlist-header {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+
+    .filters form {
+        grid-template-columns: 1fr;
+    }
+
+    .watchlist-detailed-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-bar {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .bar-label {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .watchlist-stats {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .stat-item {
+        justify-content: center;
+    }
+
+    .filter-group label {
+        text-align: center;
+    }
+
+    .duree-filter .duree-inputs {
+        justify-content: center;
+    }
+
+    .apply-filters,
+    .reset-filters {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
+
+/* Style pour le message de chargement */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.loading-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #6200ee;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Message watchlist vide */
+.no-watchlist {
+    text-align: center;
+    padding: 40px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    color: #666;
+}
+
+.no-watchlist i {
+    font-size: 3em;
+    color: #ddd;
+    margin-bottom: 20px;
+}
+
+.browse-movies {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #6200ee;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+.browse-movies:hover {
+    background: #3700b3;
+}

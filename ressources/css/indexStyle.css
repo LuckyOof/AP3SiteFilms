@@ -1,0 +1,25 @@
+.movieList{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    margin: 0% 10% 10% 10%;
+    gap: 10px;
+}
+
+.aMovie{
+    text-align: center;
+    height: auto;
+    display: flex   ;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+img{
+    width: 200px;
+    height: 200px;
+}
+
+a{
+    text-decoration: none;
+}

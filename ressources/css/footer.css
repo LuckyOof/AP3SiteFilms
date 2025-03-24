@@ -1,0 +1,133 @@
+/* Styles globaux du footer */
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #BABABA; /* Couleur de fond gris clair */
+    color: black; /* Couleur du texte */
+    transition: background-color 0.5s, color 0.5s;
+}
+
+/* Styles pour le thème par défaut */
+body {
+    margin: 0;
+    background-color: gray;
+    color: black;
+    transition: background-color 0.5s, color 0.5s;
+}
+
+.footer-left, .footer-right, .footer-center {
+    flex: 1;
+    text-align: center;
+}
+
+.footer-left {
+    text-align: left;
+}
+
+.footer-right {
+    text-align: right;
+}
+
+/* Styles pour le logo Lyococo */
+.footer-logo {
+    max-width: auto; /* Taille maximale du logo */
+    height: 80px; /* Maintient les proportions */
+    transition: box-shadow 0.3s ease; /* Transition uniquement sur l'ombre */
+}
+
+/* Styles pour les boutons */
+.footer-button {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 5px 0;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    background-color: transparent;
+    color: inherit;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Effet au survol des boutons */
+.footer-button:hover {
+    background-color: rgba(98, 0, 232, 0.2); /* Fond violet transparent */
+    border-color: #6200E8; /* Bordure violette */
+    color: #6200E8; /* Texte violet */
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(98, 0, 232, 0.5);
+}
+
+/* Container pour "Nous contacter" et les logos */
+.contact-container {
+    display: flex;
+    flex-direction: column; /* Aligne les enfants verticalement */
+    align-items: center; /* Centre horizontalement */
+    gap: 10px; /* Espacement entre les éléments */
+    margin-top: 10px;
+}
+
+/* Texte "Nous contacter" */
+.contact-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0; /* Pas de marge supplémentaire */
+}
+
+/* Container pour les icônes */
+.contact-icons {
+    display: flex;
+    gap: 15px; /* Espacement horizontal entre les logos */
+    justify-content: center; /* Centre les icônes */
+}
+
+/* Styles pour les logos */
+.contact-logo {
+    width: 50px; /* Taille des logos */
+    height: 50px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 50%; /* Rend les logos arrondis */
+}
+
+/* Effet de zoom et surbrillance au survol */
+.contact-logo:hover {
+    transform: scale(1.1); /* Zoom léger corrigé */
+    box-shadow: 0 0 10px rgba(98, 0, 232, 0.5); /* Ombre douce violette */
+    border: 2px solid #6200E8; /* Bordure violette */
+}
+
+/* Thème sombre */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #121212;
+        color: white;
+    }
+    .footer {
+        background-color: #1f1f1f; /* Fond sombre */
+        color: white;
+    }
+    .footer-button:hover {
+        background-color: rgba(98, 0, 232, 0.2);
+        border-color: #6200E8;
+        color: #fff;
+    }
+    .contact-logo:hover {
+        box-shadow: 0 0 10px rgba(98, 0, 232, 0.5);
+    }
+}
+/* Logo Lyococo clair par défaut */
+.footer-logo {
+    content: url('/AP3SiteFilms/images/logoLyococo_clair'); /* Logo par défaut pour le thème clair */
+}
+
+/* Logo Lyococo sombre pour le thème sombre */
+@media (prefers-color-scheme: dark) {
+    .footer-logo {
+        content: url('/AP3SiteFilms/images/logoLyococo_sombre.png'); /* Logo pour le thème sombre */
+    }
+}
+
