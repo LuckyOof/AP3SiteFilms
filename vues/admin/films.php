@@ -48,7 +48,7 @@
                             <td><?= $film['idFilm'] ?></td>
                             <td>
                                 <?php if(!empty($film['urlAffiche'])): ?>
-                                    <img src="<?= IMAGES_URL ?>affiches/<?= $film['urlAffiche'] ?>" alt="<?= $film['titre'] ?>" class="admin-thumbnail">
+                                    <img src="<?= IMAGES_URL ?>films/<?= $film['urlAffiche'] ?>" alt="<?= $film['titre'] ?>" class="admin-thumbnail">
                                 <?php else: ?>
                                     <div class="no-image">Pas d'image</div>
                                 <?php endif; ?>

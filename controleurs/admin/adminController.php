@@ -142,8 +142,20 @@ class AdminController {
             $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
             
             if (in_array($ext, $allowed)) {
-                $newname = uniqid() . '.' . $ext;
-                $destination = 'ressources/images/affiches/' . $newname;
+                // Transformer le titre en format camelCase pour le nom de fichier
+                $titreFormatted = strtolower($titre);
+                // Remplacer les caractères spéciaux par des espaces
+                $titreFormatted = preg_replace('/[^a-zA-Z0-9\s]/', ' ', $titreFormatted);
+                // Mettre en majuscule la première lettre après chaque espace
+                $titreFormatted = preg_replace_callback('/\s+(\w)/', function($matches) {
+                    return strtoupper($matches[1]);
+                }, $titreFormatted);
+                // Supprimer tous les espaces
+                $titreFormatted = str_replace(' ', '', $titreFormatted);
+                // Limiter la longueur
+                $titreFormatted = substr($titreFormatted, 0, 50);
+                $newname = $titreFormatted . '.' . $ext;
+                $destination = 'ressources/images/films/' . $newname;
                 
                 if (move_uploaded_file($_FILES['affiche']['tmp_name'], $destination)) {
                     $urlAffiche = $newname;
@@ -295,13 +307,25 @@ class AdminController {
             $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
             
             if (in_array($ext, $allowed)) {
-                $newname = uniqid() . '.' . $ext;
-                $destination = 'ressources/images/affiches/' . $newname;
+                // Transformer le titre en format camelCase pour le nom de fichier
+                $titreFormatted = strtolower($titre);
+                // Remplacer les caractères spéciaux par des espaces
+                $titreFormatted = preg_replace('/[^a-zA-Z0-9\s]/', ' ', $titreFormatted);
+                // Mettre en majuscule la première lettre après chaque espace
+                $titreFormatted = preg_replace_callback('/\s+(\w)/', function($matches) {
+                    return strtoupper($matches[1]);
+                }, $titreFormatted);
+                // Supprimer tous les espaces
+                $titreFormatted = str_replace(' ', '', $titreFormatted);
+                // Limiter la longueur
+                $titreFormatted = substr($titreFormatted, 0, 50);
+                $newname = $titreFormatted . '.' . $ext;
+                $destination = 'ressources/images/films/' . $newname;
                 
                 if (move_uploaded_file($_FILES['affiche']['tmp_name'], $destination)) {
                     // Supprimer l'ancienne image si elle existe
                     if (!empty($film['image'])) {
-                        $oldFile = 'ressources/images/affiches/' . $film['image'];
+                        $oldFile = 'ressources/images/films/' . $film['image'];
                         if (file_exists($oldFile)) {
                             unlink($oldFile);
                         }
@@ -377,7 +401,7 @@ class AdminController {
         if ($success) {
             // Supprimer l'image si elle existe
             if (!empty($film['image'])) {
-                $oldFile = 'ressources/images/affiches/' . $film['image'];
+                $oldFile = 'ressources/images/films/' . $film['image'];
                 if (file_exists($oldFile)) {
                     unlink($oldFile);
                 }
