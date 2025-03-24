@@ -229,6 +229,25 @@ class AvisModele extends PDOModel {
     }
     
     /**
+     * Supprime tous les avis associés à un film
+     * 
+     * @param int $idFilm Identifiant du film dont les avis doivent être supprimés
+     * @return bool True si la suppression a réussi, false sinon
+     * @throws Exception En cas d'erreur lors de la suppression
+     */
+    public function deleteAvisByFilmId($idFilm) {
+        try {
+            $sql = "DELETE FROM Avis WHERE idFilm = :idFilm";
+            $stmt = $this->getBdd()->prepare($sql);
+            $stmt->bindValue(':idFilm', $idFilm, PDO::PARAM_INT);
+            
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors de la suppression des avis du film : " . $e->getMessage());
+        }
+    }
+    
+    /**
      * Compte le nombre total d'avis
      * 
      * @return int Nombre total d'avis
