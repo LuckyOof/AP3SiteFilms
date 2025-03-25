@@ -1085,4 +1085,49 @@ class FilmModele extends PDOModel {
             throw new Exception("Erreur lors de la récupération des films récents : " . $e->getMessage());
         }
     }
+
+    public function searchFilms($query) {
+        try {
+            $searchTerm = '%' . $query . '%';
+            $limit = 20;
+            $sql = "SELECT f.*,
+                    COALESCE(r.nom, 'Non spécifié') as realisateurNom,
+                    COALESCE(r.prenom, '') as realisateurPrenom,
+                    GROUP_CONCAT(DISTINCT g.libelle) as genres,
+                    COALESCE(AVG(a.note), 0) as moyenne_notes,
+                    COUNT(a.note) as nombre_notes
+                    FROM Film f 
+                    LEFT JOIN Realisateur r ON f.idReal = r.idReal
+                    LEFT JOIN AppartenirGenre ag ON f.idFilm = ag.idFilm
+                    LEFT JOIN Genre g ON ag.idGenre = g.idGenre
+                    LEFT JOIN Avis a ON f.idFilm = a.idFilm
+                    WHERE f.titre LIKE :searchTerm 
+                    OR f.descri LIKE :searchTerm 
+                    OR g.libelle = :searchTerm
+                    OR CONCAT(r.nom, ' ', r.prenom) LIKE :searchTerm
+                    OR g.libelle = :searchTerm
+                    GROUP BY f.idFilm, r.nom, r.prenom
+                    ORDER BY f.dateSortie DESC
+                    LIMIT :limit";
+            
+            $stmt = $this->getBdd()->prepare($sql);
+            $stmt->bindValue(':searchTerm', $searchTerm, PDO::PARAM_STR);
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->execute();
+            
+            $films = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            foreach ($films as &$film) {
+                if(is_array($film['genres'] )){
+                    foreach($film['genres'] as $genre){
+                        $film['genres'] .= $genre;
+                    }
+                }
+            }
+            
+            return $films;
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors de la recherche de films : " . $e->getMessage());
+        }
+    }
 }
