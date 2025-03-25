@@ -109,14 +109,14 @@
 
         <!-- Filtres et tri -->
         <div class="watchlist-controls">
-            <form id="watchlistFilters" method="GET">
+            <form id="watchlistFilters" method="POST">
                 <div class="filters">
                     <div class="filter-group">
                         <label for="genre">Genre :</label>
                         <select name="genre" id="genre">
                             <option value="">Tous les genres</option>
                             <?php foreach ($filter_options['genres'] as $genre): ?>
-                                <option value="<?= htmlspecialchars($genre) ?>" <?= isset($_GET['genre']) && $_GET['genre'] === $genre ? 'selected' : '' ?>>
+                                <option value="<?= htmlspecialchars($genre) ?>" <?= isset($_POST['genre']) && $_POST['genre'] === $genre ? 'selected' : '' ?>>
                                     <?= htmlspecialchars($genre) ?>
                                 </option>
                             <?php endforeach; ?>
@@ -128,7 +128,7 @@
                         <select name="langue" id="langue">
                             <option value="">Toutes les langues</option>
                             <?php foreach ($filter_options['langues'] as $langue): ?>
-                                <option value="<?= htmlspecialchars($langue) ?>" <?= isset($_GET['langue']) && $_GET['langue'] === $langue ? 'selected' : '' ?>>
+                                <option value="<?= htmlspecialchars($langue) ?>" <?= isset($_POST['langue']) && $_POST['langue'] === $langue ? 'selected' : '' ?>>
                                     <?= htmlspecialchars($langue) ?>
                                 </option>
                             <?php endforeach; ?>
@@ -140,7 +140,7 @@
                         <select name="annee" id="annee">
                             <option value="">Toutes les années</option>
                             <?php foreach ($filter_options['annees'] as $annee): ?>
-                                <option value="<?= htmlspecialchars($annee) ?>" <?= isset($_GET['annee']) && $_GET['annee'] == $annee ? 'selected' : '' ?>>
+                                <option value="<?= htmlspecialchars($annee) ?>" <?= isset($_POST['annee']) && $_POST['annee'] == $annee ? 'selected' : '' ?>>
                                     <?= htmlspecialchars($annee) ?>
                                 </option>
                             <?php endforeach; ?>
@@ -150,23 +150,23 @@
                     <div class="filter-group duree-filter">
                         <label>Durée (minutes) :</label>
                         <div class="duree-inputs">
-                            <input type="number" name="dureeMin" id="dureeMin" placeholder="Min" min="0" value="<?= isset($_GET['dureeMin']) ? htmlspecialchars($_GET['dureeMin']) : '' ?>">
+                            <input type="number" name="dureeMin" id="dureeMin" placeholder="Min" min="0" value="<?= isset($_POST['dureeMin']) ? htmlspecialchars($_POST['dureeMin']) : '' ?>">
                             <span>à</span>
-                            <input type="number" name="dureeMax" id="dureeMax" placeholder="Max" min="0" value="<?= isset($_GET['dureeMax']) ? htmlspecialchars($_GET['dureeMax']) : '' ?>">
+                            <input type="number" name="dureeMax" id="dureeMax" placeholder="Max" min="0" value="<?= isset($_POST['dureeMax']) ? htmlspecialchars($_POST['dureeMax']) : '' ?>">
                         </div>
                     </div>
 
                     <div class="sort-group">
                         <label for="sort">Trier par :</label>
                         <select name="sort" id="sort">
-                            <option value="dateAjout" <?= (!isset($_GET['sort']) || $_GET['sort'] === 'dateAjout') ? 'selected' : '' ?>>Date d'ajout</option>
-                            <option value="titre" <?= isset($_GET['sort']) && $_GET['sort'] === 'titre' ? 'selected' : '' ?>>Titre</option>
-                            <option value="dateSortie" <?= isset($_GET['sort']) && $_GET['sort'] === 'dateSortie' ? 'selected' : '' ?>>Date de sortie</option>
-                            <option value="duree" <?= isset($_GET['sort']) && $_GET['sort'] === 'duree' ? 'selected' : '' ?>>Durée</option>
+                            <option value="dateAjout" <?= (!isset($_POST['sort']) || $_POST['sort'] === 'dateAjout') ? 'selected' : '' ?>>Date d'ajout</option>
+                            <option value="titre" <?= isset($_POST['sort']) && $_POST['sort'] === 'titre' ? 'selected' : '' ?>>Titre</option>
+                            <option value="dateSortie" <?= isset($_POST['sort']) && $_POST['sort'] === 'dateSortie' ? 'selected' : '' ?>>Date de sortie</option>
+                            <option value="duree" <?= isset($_POST['sort']) && $_POST['sort'] === 'duree' ? 'selected' : '' ?>>Durée</option>
                         </select>
                         <select name="order" id="order">
-                            <option value="DESC" <?= (!isset($_GET['order']) || $_GET['order'] === 'DESC') ? 'selected' : '' ?>>Décroissant</option>
-                            <option value="ASC" <?= isset($_GET['order']) && $_GET['order'] === 'ASC' ? 'selected' : '' ?>>Croissant</option>
+                            <option value="DESC" <?= (!isset($_POST['order']) || $_POST['order'] === 'DESC') ? 'selected' : '' ?>>Décroissant</option>
+                            <option value="ASC" <?= isset($_POST['order']) && $_POST['order'] === 'ASC' ? 'selected' : '' ?>>Croissant</option>
                         </select>
                     </div>
 

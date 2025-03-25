@@ -135,24 +135,24 @@ class UserController {
 
         $userId = $_SESSION["user"]["id"];
         
-        $sortBy = isset($_GET['sort']) ? $_GET['sort'] : 'dateAjout';
-        $sortOrder = isset($_GET['order']) ? $_GET['order'] : 'DESC';
+        $sortBy = isset($_POST['sort']) ? $_POST['sort'] : 'dateAjout';
+        $sortOrder = isset($_POST['order']) ? $_POST['order'] : 'DESC';
         
         $filters = [];
-        if (isset($_GET['genre']) && !empty($_GET['genre'])) {
-            $filters['genre'] = $_GET['genre'];
+        if (isset($_POST['genre']) && !empty($_POST['genre'])) {
+            $filters['genre'] = $_POST['genre'];
         }
-        if (isset($_GET['langue']) && !empty($_GET['langue'])) {
-            $filters['langue'] = $_GET['langue'];
+        if (isset($_POST['langue']) && !empty($_POST['langue'])) {
+            $filters['langue'] = $_POST['langue'];
         }
-        if (isset($_GET['annee']) && !empty($_GET['annee'])) {
-            $filters['annee'] = intval($_GET['annee']);
+        if (isset($_POST['annee']) && !empty($_POST['annee'])) {
+            $filters['annee'] = intval($_POST['annee']);
         }
-        if (isset($_GET['dureeMin']) && is_numeric($_GET['dureeMin'])) {
-            $filters['dureeMin'] = intval($_GET['dureeMin']);
+        if (isset($_POST['dureeMin']) && is_numeric($_POST['dureeMin'])) {
+            $filters['dureeMin'] = intval($_POST['dureeMin']);
         }
-        if (isset($_GET['dureeMax']) && is_numeric($_GET['dureeMax'])) {
-            $filters['dureeMax'] = intval($_GET['dureeMax']); 
+        if (isset($_POST['dureeMax']) && is_numeric($_POST['dureeMax'])) {
+            $filters['dureeMax'] = intval($_POST['dureeMax']); 
         }
 
         $watchlist = $this->utilisateurModele->getWatchlist($userId, $sortBy, $sortOrder, $filters);
