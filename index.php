@@ -161,8 +161,13 @@
                     else if($url[1] === 'updateRealisateur') {
                         $adminController->updateRealisateur();
                     }
-                    else if($url[1] === 'deleteRealisateur' && isset($url[2])) {
-                        $adminController->deleteRealisateur($url[2]);
+                    else if($url[1] === 'deleteRealisateur') {
+                        // Si c'est une requête POST ou si un ID est fourni dans l'URL
+                        if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($url[2])) {
+                            $adminController->deleteRealisateur(isset($url[2]) ? $url[2] : null);
+                        } else {
+                            throw new Exception("La page d'administration n'existe pas");
+                        }
                     }
                     else {
                         throw new Exception("La page d'administration n'existe pas");

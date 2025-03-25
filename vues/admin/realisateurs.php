@@ -74,8 +74,11 @@
         <h2>Confirmation de suppression</h2>
         <p>Êtes-vous sûr de vouloir supprimer le réalisateur <span id="realisateurName"></span> ?</p>
         <div class="modal-actions">
-            <a href="#" id="confirmDelete" class="btn btn-danger">Supprimer</a>
-            <button class="btn btn-cancel">Annuler</button>
+            <form id="deleteForm" method="post" action="<?= URL ?>admin/deleteRealisateur">
+                <input type="hidden" name="idReal" value="">
+                <button type="button" class="btn btn-cancel">Annuler</button>
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+            </form>
         </div>
     </div>
 </div>
@@ -87,8 +90,9 @@
         const deleteModal = document.getElementById('deleteModal');
         const closeModal = document.querySelector('.close');
         const cancelButton = document.querySelector('.btn-cancel');
-        const confirmDelete = document.getElementById('confirmDelete');
+        const deleteForm = document.getElementById('deleteForm');
         const realisateurName = document.getElementById('realisateurName');
+        const idInput = deleteForm.querySelector('input[name="idReal"]');
         
         deleteButtons.forEach(button => {
             button.addEventListener('click', function(e) {
@@ -97,7 +101,7 @@
                 const name = this.getAttribute('data-name');
                 
                 realisateurName.textContent = name;
-                confirmDelete.href = `${window.URL}admin/deleteRealisateur/${id}`;
+                idInput.value = id;
                 deleteModal.style.display = 'block';
             });
         });

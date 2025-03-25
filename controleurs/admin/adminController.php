@@ -618,8 +618,21 @@ class AdminController {
     /**
      * Supprime un réalisateur
      */
-    public function deleteRealisateur($idReal) {
+    public function deleteRealisateur($idReal = null) {
         $this->checkAdmin();
+        
+        // Si la méthode est appelée via POST, récupérer l'ID du formulaire
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idReal'])) {
+            $idReal = $_POST['idReal'];
+        }
+        
+        // Vérifier si l'ID est valide
+        if (!$idReal) {
+            $_SESSION['errors'] = ["Identifiant de réalisateur manquant"];
+            header('Location: ' . URL . 'admin/realisateurs');
+            exit();
+        }
+        
         // Vérifier si le réalisateur existe
         $realisateur = $this->realisateurModele->getRealisateurById($idReal);
         

@@ -2,10 +2,10 @@
 require_once 'modeles/Modele.php';
 
 class FilmModele extends Modele {
-    // Autres mu00e9thodes existantes...
+    // Autres méthodes existantes...
     
     /**
-     * Ajoute un nouveau film dans la base de donnu00e9es avec tous ses du00e9tails
+     * Ajoute un nouveau film dans la base de données avec tous ses détails
      * 
      * @param string $titre Titre du film
      * @param string $description Description du film
@@ -46,21 +46,21 @@ class FilmModele extends Modele {
     }
     
     /**
-     * Met u00e0 jour un film existant dans la base de donnu00e9es
+     * Met à jour un film existant dans la base de données
      * 
-     * @param int $idFilm Identifiant du film u00e0 mettre u00e0 jour
+     * @param int $idFilm Identifiant du film à mettre à jour
      * @param string $titre Titre du film
      * @param string $description Description du film
-     * @param int $duree Duru00e9e du film en minutes
+     * @param int $duree Durée du film en minutes
      * @param string $dateSortie Date de sortie au format YYYY-MM-DD
      * @param float $coutTotal Budget du film
      * @param float $boxOffice Recette du film
      * @param string $urlAffiche URL de l'affiche du film
-     * @param int $idReal Identifiant du ru00e9alisateur
+     * @param int $idReal Identifiant du réalisateur
      * @param string $urlBandeAnnonce URL de la bande-annonce
      * @param string $langueOriginale Langue originale du film
-     * @return bool True si la mise u00e0 jour a ru00e9ussi, false sinon
-     * @throws Exception En cas d'erreur lors de la mise u00e0 jour
+     * @return bool True si la mise à jour a réussi, false sinon
+     * @throws Exception En cas d'erreur lors de la mise à jour
      */
     public function updateFilm($idFilm, $titre, $description, $duree, $dateSortie, $coutTotal, $boxOffice, $urlAffiche, $idReal, $urlBandeAnnonce = '', $langueOriginale = '') {
         try {
@@ -94,9 +94,8 @@ class FilmModele extends Modele {
             
             return $stmt->rowCount() > 0;
         } catch (PDOException $e) {
-            throw new Exception("Erreur lors de la mise u00e0 jour du film : " . $e->getMessage());
+            throw new Exception("Erreur lors de la mise à jour du film : " . $e->getMessage());
         }
     }
     
-    // Autres mu00e9thodes existantes...
 }

@@ -4,16 +4,16 @@ require_once MODELES_PATH . "PDOModel.php";
 /**
  * Classe ActeurModele
  * 
- * Gu00e8re toutes les opu00e9rations liu00e9es aux acteurs de films dans la base de donnu00e9es
- * Hu00e9rite de PDOModel pour les fonctionnalitu00e9s de connexion u00e0 la base de donnu00e9es
+ * Gère toutes les opérations liées aux acteurs de films dans la base de données
+ * Hérite de PDOModel pour les fonctionnalités de connexion à la base de données
  */
 class ActeurModele extends PDOModel {
     
     /**
-     * Ru00e9cupu00e8re tous les acteurs
+     * Récupère tous les acteurs
      * 
      * @return array Liste de tous les acteurs
-     * @throws Exception En cas d'erreur lors de la ru00e9cupu00e9ration
+     * @throws Exception En cas d'erreur lors de la récupération
      */
     public function getAllActeurs() {
         try {
@@ -24,16 +24,16 @@ class ActeurModele extends PDOModel {
             
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            throw new Exception("Erreur lors de la ru00e9cupu00e9ration des acteurs : " . $e->getMessage());
+            throw new Exception("Erreur lors de la récupération des acteurs : " . $e->getMessage());
         }
     }
     
     /**
-     * Ru00e9cupu00e8re un acteur par son identifiant
+     * Récupère un acteur par son identifiant
      * 
      * @param int $idActeur Identifiant de l'acteur
-     * @return array|false Du00e9tails de l'acteur ou false si non trouvu00e9
-     * @throws Exception En cas d'erreur lors de la ru00e9cupu00e9ration
+     * @return array|false Details de l'acteur ou false si non trouvé
+     * @throws Exception En cas d'erreur lors de la récupération
      */
     public function getActeurById($idActeur) {
         try {
@@ -45,7 +45,7 @@ class ActeurModele extends PDOModel {
             
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            throw new Exception("Erreur lors de la ru00e9cupu00e9ration de l'acteur : " . $e->getMessage());
+            throw new Exception("Erreur lors de la récupération de l'acteur : " . $e->getMessage());
         }
     }
     
@@ -53,11 +53,11 @@ class ActeurModele extends PDOModel {
      * Ajoute un nouvel acteur
      * 
      * @param string $nom Nom de l'acteur
-     * @param string $prenom Pru00e9nom de l'acteur
+     * @param string $prenom Prénom de l'acteur
      * @param string $dateNaissance Date de naissance de l'acteur (format YYYY-MM-DD)
-     * @param string $nationalite Nationalitu00e9 de l'acteur
+     * @param string $nationalite Nationalité de l'acteur
      * @param string $photo URL de la photo de l'acteur
-     * @return int|false Identifiant de l'acteur ajoutu00e9 ou false en cas d'u00e9chec
+     * @return int|false Identifiant de l'acteur ajouté ou false en cas d'échec
      * @throws Exception En cas d'erreur lors de l'ajout
      */
     public function addActeur($nom, $prenom, $dateNaissance = null, $nationalite = null, $photo = null) {
@@ -80,16 +80,16 @@ class ActeurModele extends PDOModel {
     }
     
     /**
-     * Met u00e0 jour un acteur existant
+     * Met à jour un acteur existant
      * 
      * @param int $idActeur Identifiant de l'acteur
      * @param string $nom Nom de l'acteur
-     * @param string $prenom Pru00e9nom de l'acteur
+     * @param string $prenom Prénom de l'acteur
      * @param string $dateNaissance Date de naissance de l'acteur (format YYYY-MM-DD)
-     * @param string $nationalite Nationalitu00e9 de l'acteur
+     * @param string $nationalite Nationalité de l'acteur
      * @param string $photo URL de la photo de l'acteur
-     * @return bool True si la mise u00e0 jour a ru00e9ussi, false sinon
-     * @throws Exception En cas d'erreur lors de la mise u00e0 jour
+     * @return bool True si la mise à jour a réussi, false sinon
+     * @throws Exception En cas d'erreur lors de la mise à jour
      */
     public function updateActeur($idActeur, $nom, $prenom, $dateNaissance = null, $nationalite = null, $photo = null) {
         try {
@@ -108,27 +108,27 @@ class ActeurModele extends PDOModel {
             
             return $stmt->execute();
         } catch (PDOException $e) {
-            throw new Exception("Erreur lors de la mise u00e0 jour de l'acteur : " . $e->getMessage());
+            throw new Exception("Erreur lors de la mise à jour de l'acteur : " . $e->getMessage());
         }
     }
     
     /**
      * Supprime un acteur
      * 
-     * @param int $idActeur Identifiant de l'acteur u00e0 supprimer
-     * @return bool True si la suppression a ru00e9ussi, false sinon
+     * @param int $idActeur Identifiant de l'acteur à supprimer
+     * @return bool True si la suppression a réussi, false sinon
      * @throws Exception En cas d'erreur lors de la suppression
      */
     public function deleteActeur($idActeur) {
         try {
-            // Vu00e9rifier si l'acteur joue dans des films
+            // Vérifier si l'acteur joue dans des films
             $sql = "SELECT COUNT(*) FROM Jouer WHERE idActeur = :idActeur";
             $stmt = $this->getBdd()->prepare($sql);
             $stmt->bindValue(':idActeur', $idActeur, PDO::PARAM_INT);
             $stmt->execute();
             
             if ($stmt->fetchColumn() > 0) {
-                throw new Exception("Impossible de supprimer cet acteur car il est associu00e9 u00e0 un ou plusieurs films.");
+                throw new Exception("Impossible de supprimer cet acteur car il est associé à un ou plusieurs films.");
             }
             
             // Supprimer l'acteur
@@ -161,11 +161,11 @@ class ActeurModele extends PDOModel {
     }
     
     /**
-     * Ru00e9cupu00e8re les films dans lesquels joue un acteur
+     * Récupère les films dans lesquels joue un acteur
      * 
      * @param int $idActeur Identifiant de l'acteur
      * @return array Liste des films dans lesquels joue l'acteur
-     * @throws Exception En cas d'erreur lors de la ru00e9cupu00e9ration
+     * @throws Exception En cas d'erreur lors de la récupération
      */
     public function getFilmsByActeur($idActeur) {
         try {
@@ -179,7 +179,7 @@ class ActeurModele extends PDOModel {
             
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            throw new Exception("Erreur lors de la ru00e9cupu00e9ration des films par acteur : " . $e->getMessage());
+            throw new Exception("Erreur lors de la récupération des films par acteur : " . $e->getMessage());
         }
     }
 }
