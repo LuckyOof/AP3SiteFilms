@@ -134,6 +134,11 @@ class AdminController {
             $errors[] = "Veuillez sélectionner au moins un genre";
         }
         
+        // Vérifier si un film avec le même titre existe déjà
+        if (!empty($titre) && $this->filmModele->filmExistsByTitle($titre)) {
+            $errors[] = "Un film avec ce titre existe déjà";
+        }
+        
         // Traitement de l'image
         $urlAffiche = '';
         if (isset($_FILES['affiche']) && $_FILES['affiche']['error'] == 0) {
@@ -296,6 +301,11 @@ class AdminController {
             $errors[] = "Veuillez sélectionner au moins un genre";
         }
         
+        // Vérifier si un film avec le même titre existe déjà (en excluant le film en cours de modification)
+        if (!empty($titre) && $this->filmModele->filmExistsByTitle($titre, $idFilm)) {
+            $errors[] = "Un film avec ce titre existe déjà";
+        }
+        
         // Récupérer l'URL de l'affiche actuelle
         $film = $this->filmModele->getFilmById($idFilm);
         $urlAffiche = $film['image'];
@@ -377,8 +387,21 @@ class AdminController {
     /**
      * Supprime un film
      */
-    public function deleteFilm($idFilm) {
+    public function deleteFilm($idFilm = null) {
         $this->checkAdmin();
+        
+        // Si l'ID n'est pas fourni dans l'URL, vérifier s'il est fourni en POST
+        if ($idFilm === null && isset($_POST['idFilm'])) {
+            $idFilm = intval($_POST['idFilm']);
+        }
+        
+        // Vérifier si l'ID est valide
+        if (!$idFilm || $idFilm <= 0) {
+            $_SESSION['errors'] = ["ID de film invalide"];
+            header('Location: ' . URL . 'admin/films');
+            exit();
+        }
+        
         // Vérifier si le film existe
         $film = $this->filmModele->getFilmById($idFilm);
         
@@ -388,28 +411,32 @@ class AdminController {
             exit();
         }
         
-        // Supprimer les relations
-        $this->filmModele->deleteGenresFromFilm($idFilm);
-        $this->filmModele->deleteActorsFromFilm($idFilm);
-        
-        // Supprimer les avis associés au film
-        $this->avisModele->deleteAvisByFilmId($idFilm);
-        
-        // Supprimer le film
-        $success = $this->filmModele->deleteFilm($idFilm);
-        
-        if ($success) {
-            // Supprimer l'image si elle existe
-            if (!empty($film['image'])) {
-                $oldFile = 'ressources/images/films/' . $film['image'];
-                if (file_exists($oldFile)) {
-                    unlink($oldFile);
-                }
-            }
+        try {
+            // Supprimer les avis associés au film
+            $this->avisModele->deleteAvisByFilmId($idFilm);
             
-            $_SESSION['success'] = "Le film a été supprimé avec succès";
-        } else {
-            $_SESSION['errors'] = ["Une erreur est survenue lors de la suppression du film"];
+            // Supprimer les relations
+            $this->filmModele->deleteGenresFromFilm($idFilm);
+            $this->filmModele->deleteActorsFromFilm($idFilm);
+            
+            // Supprimer le film
+            $success = $this->filmModele->deleteFilm($idFilm);
+            
+            if ($success) {
+                // Supprimer l'image du film si elle existe
+                if (!empty($film['image'])) {
+                    $imagePath = 'ressources/images/films/' . $film['image'];
+                    if (file_exists($imagePath)) {
+                        unlink($imagePath);
+                    }
+                }
+                
+                $_SESSION['success'] = "Le film a été supprimé avec succès";
+            } else {
+                $_SESSION['errors'] = ["Une erreur est survenue lors de la suppression du film"];
+            }
+        } catch (Exception $e) {
+            $_SESSION['errors'] = ["Erreur lors de la suppression du film : " . $e->getMessage()];
         }
         
         header('Location: ' . URL . 'admin/films');
@@ -656,6 +683,215 @@ class AdminController {
         }
         
         header('Location: ' . URL . 'admin/realisateurs');
+        exit();
+    }
+    
+    /**
+     * Affiche la liste des genres pour l'administration
+     */
+    public function genres() {
+        $this->checkAdmin();
+        try {
+            $genres = $this->genreModele->getAllGenres();
+            
+            $data_page = [
+                "page_description" => "Administration des genres",
+                "page_title" => "Administration des genres",
+                "genres" => $genres,
+                "css" => ["admin.css"],
+                "js" => ["admin.js", "tables.js"],
+                "view" => [
+                    "vues/front/header.php",
+                    "vues/admin/genres.php",
+                    "vues/front/footer.php"
+                ],
+                "template" => "vues/front/layout.php"
+            ];
+            
+            $this->genererPage($data_page);
+        } catch (Exception $e) {
+            $_SESSION['errors'] = [$e->getMessage()];
+            header('Location: ' . URL . 'admin/dashboard');
+            exit();
+        }
+    }
+    
+    /**
+     * Affiche le formulaire d'ajout de genre
+     */
+    public function addGenre() {
+        $this->checkAdmin();
+        
+        $data_page = [
+            "page_description" => "Ajouter un genre",
+            "page_title" => "Ajouter un genre",
+            "css" => ["admin.css"],
+            "js" => ["admin.js"],
+            "view" => [
+                "vues/front/header.php",
+                "vues/admin/addGenre.php",
+                "vues/front/footer.php"
+            ],
+            "template" => "vues/front/layout.php"
+        ];
+        
+        $this->genererPage($data_page);
+    }
+    
+    /**
+     * Traite le formulaire d'ajout de genre
+     */
+    public function saveGenre() {
+        $this->checkAdmin();
+        
+        // Récupérer les données du formulaire
+        $libelle = isset($_POST['libelle']) ? trim($_POST['libelle']) : '';
+        
+        // Validation des données
+        $errors = [];
+        
+        if (empty($libelle)) {
+            $errors[] = "Le libellé est obligatoire";
+        }
+        
+        if (!empty($errors)) {
+            $_SESSION['errors'] = $errors;
+            $_SESSION['form_data'] = $_POST; // Pour repopuler le formulaire
+            header('Location: ' . URL . 'admin/addGenre');
+            exit();
+        }
+        
+        try {
+            // Ajouter le genre
+            $idGenre = $this->genreModele->addGenre($libelle);
+            
+            if ($idGenre) {
+                $_SESSION['success'] = "Le genre a été ajouté avec succès";
+            } else {
+                $_SESSION['errors'] = ["Une erreur est survenue lors de l'ajout du genre"];
+            }
+        } catch (Exception $e) {
+            $_SESSION['errors'] = [$e->getMessage()];
+        }
+        
+        header('Location: ' . URL . 'admin/genres');
+        exit();
+    }
+    
+    /**
+     * Affiche le formulaire de modification d'un genre
+     */
+    public function editGenre($idGenre) {
+        $this->checkAdmin();
+        
+        // Vérifier si le genre existe
+        $genre = $this->genreModele->getGenreById($idGenre);
+        
+        if (!$genre) {
+            $_SESSION['errors'] = ["Genre non trouvé"];
+            header('Location: ' . URL . 'admin/genres');
+            exit();
+        }
+        
+        $data_page = [
+            "page_description" => "Modifier un genre",
+            "page_title" => "Modifier un genre",
+            "genre" => $genre,
+            "css" => ["admin.css"],
+            "js" => ["admin.js"],
+            "view" => [
+                "vues/front/header.php",
+                "vues/admin/editGenre.php",
+                "vues/front/footer.php"
+            ],
+            "template" => "vues/front/layout.php"
+        ];
+        
+        $this->genererPage($data_page);
+    }
+    
+    /**
+     * Traite le formulaire de modification de genre
+     */
+    public function updateGenre() {
+        $this->checkAdmin();
+        
+        // Récupérer les données du formulaire
+        $idGenre = isset($_POST['idGenre']) ? (int)$_POST['idGenre'] : 0;
+        $libelle = isset($_POST['libelle']) ? trim($_POST['libelle']) : '';
+        
+        // Validation des données
+        $errors = [];
+        
+        if (empty($idGenre)) {
+            $errors[] = "Identifiant de genre manquant";
+        }
+        
+        if (empty($libelle)) {
+            $errors[] = "Le libellé est obligatoire";
+        }
+        
+        if (!empty($errors)) {
+            $_SESSION['errors'] = $errors;
+            $_SESSION['form_data'] = $_POST; // Pour repopuler le formulaire
+            header('Location: ' . URL . 'admin/editGenre/' . $idGenre);
+            exit();
+        }
+        
+        // Mettre à jour le genre
+        $success = $this->genreModele->updateGenre($idGenre, $libelle);
+        
+        if ($success) {
+            $_SESSION['success'] = "Le genre a été mis à jour avec succès";
+        } else {
+            $_SESSION['errors'] = ["Une erreur est survenue lors de la mise à jour du genre"];
+        }
+        
+        header('Location: ' . URL . 'admin/genres');
+        exit();
+    }
+    
+    /**
+     * Supprime un genre
+     */
+    public function deleteGenre($idGenre = null) {
+        $this->checkAdmin();
+        
+        // Si la méthode est appelée via POST, récupérer l'ID du formulaire
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idGenre'])) {
+            $idGenre = $_POST['idGenre'];
+        }
+        
+        // Vérifier si l'ID est valide
+        if (!$idGenre) {
+            $_SESSION['errors'] = ["Identifiant de genre manquant"];
+            header('Location: ' . URL . 'admin/genres');
+            exit();
+        }
+        
+        // Vérifier si le genre existe
+        $genre = $this->genreModele->getGenreById($idGenre);
+        
+        if (!$genre) {
+            $_SESSION['errors'] = ["Genre non trouvé"];
+            header('Location: ' . URL . 'admin/genres');
+            exit();
+        }
+        
+        try {
+            // Supprimer le genre
+            $success = $this->genreModele->deleteGenre($idGenre);
+            
+            if ($success) {
+                $_SESSION['success'] = "Le genre a été supprimé avec succès";
+            } else {
+                $_SESSION['errors'] = ["Une erreur est survenue lors de la suppression du genre"];
+            }
+        } catch (Exception $e) {
+            $_SESSION['errors'] = [$e->getMessage()];
+        }
+        
+        header('Location: ' . URL . 'admin/genres');
         exit();
     }
     

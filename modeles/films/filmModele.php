@@ -606,6 +606,13 @@ class FilmModele extends PDOModel {
      */
     public function addFilm($titre, $description, $duree, $dateSortie, $coutTotal, $boxOffice, $urlAffiche, $idReal, $urlBandeAnnonce = '', $langueOriginale = '') {
         try {
+            // Vérifier d'abord si un film avec ce titre existe déjà
+            if ($this->filmExistsByTitle($titre)) {
+                throw new Exception("Un film avec ce titre existe déjà");
+            }
+            
+            $this->getBdd()->beginTransaction();
+            
             $sql = "INSERT INTO Film (titre, descri, duree, dateSortie, coutTotal, boxOffice, image, idReal, trailer, langueVO) 
                    VALUES (:titre, :description, :duree, :dateSortie, :coutTotal, :boxOffice, :urlAffiche, :idReal, :urlBandeAnnonce, :langueOriginale)";
             
@@ -623,8 +630,15 @@ class FilmModele extends PDOModel {
             
             $stmt->execute();
             
-            return $this->getBdd()->lastInsertId();
+            $idFilm = $this->getBdd()->lastInsertId();
+            
+            $this->getBdd()->commit();
+            
+            return $idFilm;
         } catch (PDOException $e) {
+            if ($this->getBdd()->inTransaction()) {
+                $this->getBdd()->rollBack();
+            }
             throw new Exception("Erreur lors de l'ajout du film : " . $e->getMessage());
         }
     }
@@ -648,6 +662,13 @@ class FilmModele extends PDOModel {
      */
     public function updateFilm($idFilm, $titre, $description, $duree, $dateSortie, $coutTotal, $boxOffice, $urlAffiche, $idReal, $urlBandeAnnonce = '', $langueOriginale = '') {
         try {
+            // Vérifier d'abord si un film avec ce titre existe déjà (en excluant le film en cours de modification)
+            if ($this->filmExistsByTitle($titre, $idFilm)) {
+                throw new Exception("Un film avec ce titre existe déjà");
+            }
+            
+            $this->getBdd()->beginTransaction();
+            
             $sql = "UPDATE Film SET 
                    titre = :titre, 
                    descri = :description, 
@@ -675,9 +696,15 @@ class FilmModele extends PDOModel {
             $stmt->bindValue(':langueOriginale', $langueOriginale, PDO::PARAM_STR);
             
             $stmt->execute();
+            $result = $stmt->rowCount() > 0;
             
-            return $stmt->rowCount() > 0;
+            $this->getBdd()->commit();
+            
+            return $result;
         } catch (PDOException $e) {
+            if ($this->getBdd()->inTransaction()) {
+                $this->getBdd()->rollBack();
+            }
             throw new Exception("Erreur lors de la mise à jour du film : " . $e->getMessage());
         }
     }
@@ -981,6 +1008,38 @@ class FilmModele extends PDOModel {
             return ($result['count'] > 0);
         } catch (PDOException $e) {
             throw new Exception("Erreur lors de la vérification de la watchlist : " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Vérifie si un film avec le même titre existe déjà
+     * 
+     * @param string $titre Titre du film à vérifier
+     * @param int $idFilm ID du film à exclure de la vérification (utile pour l'update)
+     * @return bool True si un film avec ce titre existe déjà, false sinon
+     * @throws Exception En cas d'erreur lors de la vérification
+     */
+    public function filmExistsByTitle($titre, $idFilm = 0) {
+        try {
+            $sql = "SELECT COUNT(*) FROM Film WHERE titre = :titre";
+            
+            // Si on a un ID de film, on l'exclut de la recherche (pour les mises à jour)
+            if ($idFilm > 0) {
+                $sql .= " AND idFilm != :idFilm";
+            }
+            
+            $stmt = $this->getBdd()->prepare($sql);
+            $stmt->bindValue(':titre', $titre, PDO::PARAM_STR);
+            
+            if ($idFilm > 0) {
+                $stmt->bindValue(':idFilm', $idFilm, PDO::PARAM_INT);
+            }
+            
+            $stmt->execute();
+            
+            return (int)$stmt->fetchColumn() > 0;
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors de la vérification de l'existence du film : " . $e->getMessage());
         }
     }
 }

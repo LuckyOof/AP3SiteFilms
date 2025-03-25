@@ -143,8 +143,13 @@
                     else if($url[1] === 'updateFilm') {
                         $adminController->updateFilm();
                     }
-                    else if($url[1] === 'deleteFilm' && isset($url[2])) {
-                        $adminController->deleteFilm($url[2]);
+                    else if($url[1] === 'deleteFilm') {
+                        // Si c'est une requête POST ou si un ID est fourni dans l'URL
+                        if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($url[2])) {
+                            $adminController->deleteFilm(isset($url[2]) ? $url[2] : null);
+                        } else {
+                            throw new Exception("La page d'administration n'existe pas");
+                        }
                     }
                     else if($url[1] === 'realisateurs') {
                         $adminController->realisateurs();
@@ -165,6 +170,29 @@
                         // Si c'est une requête POST ou si un ID est fourni dans l'URL
                         if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($url[2])) {
                             $adminController->deleteRealisateur(isset($url[2]) ? $url[2] : null);
+                        } else {
+                            throw new Exception("La page d'administration n'existe pas");
+                        }
+                    }
+                    else if($url[1] === 'genres') {
+                        $adminController->genres();
+                    }
+                    else if($url[1] === 'addGenre') {
+                        $adminController->addGenre();
+                    }
+                    else if($url[1] === 'saveGenre') {
+                        $adminController->saveGenre();
+                    }
+                    else if($url[1] === 'editGenre' && isset($url[2])) {
+                        $adminController->editGenre($url[2]);
+                    }
+                    else if($url[1] === 'updateGenre') {
+                        $adminController->updateGenre();
+                    }
+                    else if($url[1] === 'deleteGenre') {
+                        // Si c'est une requête POST ou si un ID est fourni dans l'URL
+                        if ($_SERVER['REQUEST_METHOD'] === 'POST' || isset($url[2])) {
+                            $adminController->deleteGenre(isset($url[2]) ? $url[2] : null);
                         } else {
                             throw new Exception("La page d'administration n'existe pas");
                         }

@@ -79,7 +79,10 @@
         <p class="warning">Cette action est irréversible et supprimera également tous les avis associés à ce film.</p>
         <div class="modal-buttons">
             <button id="cancelDelete" class="btn-cancel">Annuler</button>
-            <a id="confirmDelete" href="#" class="btn-confirm">Supprimer</a>
+            <form id="deleteForm" method="POST" style="display:inline;">
+                <input type="hidden" id="filmIdInput" name="idFilm" value="">
+                <button type="submit" class="btn-confirm">Supprimer</button>
+            </form>
         </div>
     </div>
 </div>
@@ -111,8 +114,9 @@
         const deleteButtons = document.querySelectorAll('.btn-delete');
         const closeBtn = document.querySelector('.close');
         const cancelBtn = document.getElementById('cancelDelete');
-        const confirmBtn = document.getElementById('confirmDelete');
+        const deleteForm = document.getElementById('deleteForm');
         const filmTitleSpan = document.getElementById('filmTitle');
+        const filmIdInput = document.getElementById('filmIdInput');
         
         deleteButtons.forEach(button => {
             button.addEventListener('click', function(e) {
@@ -121,7 +125,8 @@
                 const filmTitle = this.getAttribute('data-title');
                 
                 filmTitleSpan.textContent = filmTitle;
-                confirmBtn.href = '<?= URL ?>admin/deleteFilm/' + filmId;
+                filmIdInput.value = filmId;
+                deleteForm.action = '<?= URL ?>admin/deleteFilm';
                 modal.style.display = 'block';
             });
         });
