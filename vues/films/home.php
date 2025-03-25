@@ -52,7 +52,7 @@ $featuredFilm = $latest_films[0] ?? null;
 <section class="films-section top-rated">
     <div class="section-header">
         <h2>Les mieux notés</h2>
-        <a href="<?= URL ?>index.php?page=popular" class="view-all">Voir tout <i class="fas fa-arrow-right"></i></a>
+        <a href="<?= URL ?>films/popular" class="view-all">Voir tout <i class="fas fa-arrow-right"></i></a>
     </div>
     <div class="films-grid">
         <?php foreach ($top_rated_films as $film): ?>
