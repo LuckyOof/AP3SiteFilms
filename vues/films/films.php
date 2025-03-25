@@ -1,16 +1,10 @@
-<?php
-$currentGenre = isset($_GET['genre']) ? $_GET['genre'] : '';
-$currentSort = isset($_GET['sort']) ? $_GET['sort'] : 'dateSortie';
-$currentOrder = isset($_GET['order']) ? $_GET['order'] : 'DESC';
-?>
-
 <div class="films-page">
     <!-- En-tête avec filtres -->
     <div class="films-header">
         <h1>Tous les films</h1>
         
         <div class="films-filters">
-            <form method="GET" action="<?= URL ?>films" class="filter-form">
+            <form method="POST" action="<?= URL ?>films" class="filter-form">
                 <div class="filter-group">
                     <label for="genre">Genre :</label>
                     <select name="genre" id="genre">
@@ -81,7 +75,9 @@ $currentOrder = isset($_GET['order']) ? $_GET['order'] : 'DESC';
                     <div class="film-meta">
                         <span><i class="fas fa-clock"></i> <?= $film['duree'] ?> min</span>
                         <span><i class="fas fa-calendar"></i> <?= (new DateTime($film['dateSortie']))->format('Y') ?></span>
-                        <span><i class="fas fa-film"></i> <?= htmlspecialchars($film['genre']) ?></span>
+                        <span>
+                            <i class="fas fa-film"></i> <?= htmlspecialchars($film['genres'][0]) ?>
+                        </span>
                     </div>
                     <p class="film-description"><?= htmlspecialchars(substr($film['descri'], 0, 100)) ?>...</p>
                 </div>
@@ -89,7 +85,7 @@ $currentOrder = isset($_GET['order']) ? $_GET['order'] : 'DESC';
         <?php endforeach; ?>
     </div>
 
-    <!-- Pagination -->
+    <!-- Pagination
     <?php if ($total_pages > 1): ?>
         <div class="pagination">
             <?php if ($current_page > 1): ?>
@@ -115,7 +111,7 @@ $currentOrder = isset($_GET['order']) ? $_GET['order'] : 'DESC';
                 </a>
             <?php endif; ?>
         </div>
-    <?php endif; ?>
+    <?php endif; ?> -->
 </div>
 
 <!-- Message si aucun film -->

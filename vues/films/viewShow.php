@@ -33,7 +33,7 @@
                 <div class="movie-rating-average"><?= $noteMoyenne ? number_format($noteMoyenne, 1) : '0' ?></div>
                 <div class="movie-rating-count">(<?= $moyenne['nombre'] ?? 0 ?> avis)</div>
             </div>
-            <button 
+            <!-- <button 
                 class="watchlist-btn <?= $in_watchlist ? 'in-watchlist' : '' ?>"
                 onclick="toggleWatchlist(<?= $film['idFilm'] ?>, this)"
                 data-in-watchlist="<?= $in_watchlist ? 'true' : 'false' ?>">
@@ -42,7 +42,7 @@
                 <?php else : ?>
                     <i class="fas fa-plus"></i> Ajouter à ma watchlist
                 <?php endif; ?>
-            </button>
+            </button> -->
         </div>
 
         <div class="movie-main-info">
@@ -113,7 +113,7 @@
 
         <div class="movie-description">
             <h2>Synopsis</h2>
-            <p><?= nl2br(htmlspecialchars($film['descri'])) ?></p>
+            <p id="descri"><?= nl2br(htmlspecialchars($film['descri'])) ?></p>
         </div>
 
         <?php if (!empty($film['trailer'])) : ?>

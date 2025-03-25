@@ -28,13 +28,7 @@
             <p class="stat-number"><?= $totalGenres ?></p>
             <a href="<?= URL ?>admin/genres" class="btn btn-primary">Gérer les genres</a>
         </div>
-        
-        <div class="stat-card">
-            <h3><i class="fas fa-user-tie"></i> Acteurs</h3>
-            <p class="stat-number"><?= $totalActeurs ?></p>
-            <a href="<?= URL ?>admin/acteurs" class="btn btn-primary">Gérer les acteurs</a>
-        </div>
-        
+
         <div class="stat-card">
             <h3><i class="fas fa-video"></i> Réalisateurs</h3>
             <p class="stat-number"><?= $totalRealisateurs ?></p>
@@ -42,15 +36,21 @@
         </div>
         
         <div class="stat-card">
+            <h3><i class="fas fa-user-tie"></i> Acteurs</h3>
+            <p class="stat-number"><?= $totalActeurs ?></p>
+            <!-- <a href="<?= URL ?>admin/acteurs" class="btn btn-primary">Gérer les acteurs</a> -->
+        </div>
+        
+        <div class="stat-card">
             <h3><i class="fas fa-star"></i> Avis</h3>
             <p class="stat-number"><?= $totalAvis ?></p>
-            <a href="<?= URL ?>admin/avis" class="btn btn-primary">Gérer les avis</a>
+            <!-- <a href="<?= URL ?>admin/avis" class="btn btn-primary">Gérer les avis</a> -->
         </div>
         
         <div class="stat-card">
             <h3><i class="fas fa-users"></i> Utilisateurs</h3>
             <p class="stat-number"><?= $totalUtilisateurs ?></p>
-            <a href="<?= URL ?>admin/utilisateurs" class="btn btn-primary">Gérer les utilisateurs</a>
+            <!-- <a href="<?= URL ?>admin/utilisateurs" class="btn btn-primary">Gérer les utilisateurs</a> -->
         </div>
     </div>
     

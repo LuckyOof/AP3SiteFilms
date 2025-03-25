@@ -23,7 +23,7 @@ $featuredFilm = $latest_films[0] ?? null;
 <section class="films-section">
     <div class="section-header">
         <h2>Dernières sorties</h2>
-        <a href="<?= URL ?>index.php?page=news" class="view-all">Voir tout <i class="fas fa-arrow-right"></i></a>
+        <a href="<?= URL ?>films" class="view-all">Voir tout <i class="fas fa-arrow-right"></i></a>
     </div>
     <div class="films-grid">
         <?php foreach (array_slice($latest_films, 1) as $film): ?>
@@ -52,7 +52,7 @@ $featuredFilm = $latest_films[0] ?? null;
 <section class="films-section top-rated">
     <div class="section-header">
         <h2>Les mieux notés</h2>
-        <a href="<?= URL ?>films/popular" class="view-all">Voir tout <i class="fas fa-arrow-right"></i></a>
+        <a href="<?= URL ?>films" class="view-all">Voir tout <i class="fas fa-arrow-right"></i></a>
     </div>
     <div class="films-grid">
         <?php foreach ($top_rated_films as $film): ?>
@@ -91,7 +91,7 @@ $featuredFilm = $latest_films[0] ?? null;
             <div class="genre-block">
                 <div class="genre-header">
                     <h3><?= htmlspecialchars($genre) ?></h3>
-                    <a href="<?= URL ?>index.php?page=films&genre=<?= urlencode($genre) ?>" class="view-all">Voir tout <i class="fas fa-arrow-right"></i></a>
+                    <a href="<?= URL ?>films" class="view-all">Voir tout <i class="fas fa-arrow-right"></i></a>
                 </div>
                 <div class="films-slider">
                     <?php foreach ($films as $film): ?>

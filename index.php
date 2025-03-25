@@ -27,7 +27,7 @@
             switch($url[0]){
                 case 'films':
                     if(empty($url[1])) {
-                        $filmController->index();
+                        $filmController->films();
                     }
                     else if($url[1] === 'search') {
                         $filmController->search();

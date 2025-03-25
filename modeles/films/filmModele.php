@@ -204,6 +204,25 @@ class FilmModele extends PDOModel {
         }
     }
 
+    public function getTotalFilms($genre) {
+        try {
+            $sql = "SELECT COUNT(*) FROM Film";
+            
+            if (!empty($genre)) {
+                $sql .= " WHERE idFilm IN (SELECT idFilm FROM AppartenirGenre WHERE idGenre = (SELECT idGenre FROM Genre WHERE libelle = :genre))";
+                $stmt = $this->getBdd()->prepare($sql);
+                $stmt->bindValue(":genre", $genre, PDO::PARAM_STR);
+            } else {
+                $stmt = $this->getBdd()->prepare($sql);
+            }
+            
+            $stmt->execute();
+            return $stmt->fetchColumn();
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors du comptage des films : " . $e->getMessage());
+        }
+    }
+
     /**
      * Récupère les films à venir (date de sortie future)
      * 

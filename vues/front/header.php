@@ -91,9 +91,9 @@
                             <a href="<?= URL ?>profile" class="sidebar-item">
                                 <i class="fas fa-user"></i> Mon Profil
                             </a>
-                            <a href="<?= URL ?>watchlist" class="sidebar-item">
+                            <!-- <a href="<?= URL ?>watchlist" class="sidebar-item">
                                 <i class="fas fa-list"></i> Ma Watchlist
-                            </a>
+                            </a> -->
                             <a href="<?= URL ?>reviews" class="sidebar-item">
                                 <i class="fas fa-star"></i> Mes Avis
                             </a>

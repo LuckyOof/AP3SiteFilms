@@ -46,6 +46,69 @@ class FilmController {
         $this->genererPage($data_page);
     }
 
+    public function films() {
+        // Paramètres de pagination
+        $items_per_page = 12;
+        $current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+        $offset = ($current_page - 1) * $items_per_page;
+
+        // Paramètres de tri et filtrage
+        $currentGenre = isset($_POST['genre']) ? $_POST['genre'] : '';
+        $currentLangue = isset($_POST['langue']) ? $_POST['langue'] : '';
+        $currentAnnee = isset($_POST['annee']) ? $_POST['annee'] : '';
+        $currentSort = isset($_POST['sort']) ? $_POST['sort'] : 'dateSortie';
+        $currentOrder = isset($_POST['order']) ? $_POST['order'] : 'DESC';
+
+        $filters = [
+            'genre' => $currentGenre,
+            'langue' => $currentLangue,
+            'annee' => $currentAnnee
+        ];
+
+        // Récupérer les films avec pagination
+        $films = $this->filmModele->getFilms($offset, $items_per_page, $currentSort, $currentOrder, $filters);
+        $total_films = $this->filmModele->getTotalFilms($currentGenre);
+        $total_pages = ceil($total_films / $items_per_page);
+
+        // Récupérer des filtres
+        $genres = $this->filmModele->getDistinctValues('genre');
+        $langues = $this->filmModele->getDistinctValues('langueVO');
+        $annees = $this->filmModele->getDistinctValues('YEAR(dateSortie)');
+
+        // Si l'utilisateur est connecté, marquer les films dans sa watchlist
+        if (isset($_SESSION['user'])) {
+            foreach ($films as &$film) {
+                $film['in_watchlist'] = $this->filmModele->isInWatchlist($_SESSION['user']['id'], $film['idFilm']);
+            }
+        }
+
+        $data_page = [
+            "page_description" => "Explorez notre catalogue complet de films",
+            "page_title" => "Films - Site de Films",
+            "films" => $films,
+            "genres" => $genres,
+            "langues" => $langues,
+            "annees" => $annees,
+            "current_page" => $current_page,
+            "currentGenre" => $currentGenre,
+            "currentLangue" => $currentLangue,
+            "currentAnnee" => $currentAnnee,
+            "currentSort" => $currentSort,
+            "currentOrder" => $currentOrder,
+            "total_pages" => $total_pages,
+            "rating_enabled" => true,
+            "css" => ["film.css"],
+                "view" => [                
+                "vues/front/header.php",
+                "vues/films/films.php",
+                "vues/front/footer.php"
+            ],
+            "template" => "vues/front/layout.php"
+        ];
+
+        $this->genererPage($data_page);
+    }
+
     public function filmInfo($id) {
         $film = $this->filmModele->getFilmById($id);
         

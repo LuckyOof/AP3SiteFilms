@@ -24,7 +24,7 @@
                         <p class="movie-description"><?= htmlspecialchars(substr($movie['descri'], 0, 150)) ?>...</p>
                         <div class="movie-actions">
                             <a href="<?= URL ?>index.php?page=films/show&id=<?= $movie['idFilm'] ?>" class="view-btn">Voir plus</a>
-                            <button 
+                            <!-- <button 
                                 class="watchlist-btn <?= isset($watchlistStatus[$movie['idFilm']]) && $watchlistStatus[$movie['idFilm']] ? 'in-watchlist' : '' ?>"
                                 onclick="toggleWatchlist(<?= $movie['idFilm'] ?>, this)"
                                 data-in-watchlist="<?= isset($watchlistStatus[$movie['idFilm']]) && $watchlistStatus[$movie['idFilm']] ? 'true' : 'false' ?>">
@@ -33,7 +33,7 @@
                                 <?php else : ?>
                                     <i class="fas fa-plus"></i> Ajouter à ma watchlist
                                 <?php endif; ?>
-                            </button>
+                            </button> -->
                         </div>
                     </div>
                 </div>
