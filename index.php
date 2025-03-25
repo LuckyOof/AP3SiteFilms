@@ -146,6 +146,24 @@
                     else if($url[1] === 'deleteFilm' && isset($url[2])) {
                         $adminController->deleteFilm($url[2]);
                     }
+                    else if($url[1] === 'realisateurs') {
+                        $adminController->realisateurs();
+                    }
+                    else if($url[1] === 'addRealisateur') {
+                        $adminController->addRealisateur();
+                    }
+                    else if($url[1] === 'saveRealisateur') {
+                        $adminController->saveRealisateur();
+                    }
+                    else if($url[1] === 'editRealisateur' && isset($url[2])) {
+                        $adminController->editRealisateur($url[2]);
+                    }
+                    else if($url[1] === 'updateRealisateur') {
+                        $adminController->updateRealisateur();
+                    }
+                    else if($url[1] === 'deleteRealisateur' && isset($url[2])) {
+                        $adminController->deleteRealisateur($url[2]);
+                    }
                     else {
                         throw new Exception("La page d'administration n'existe pas");
                     }

@@ -417,6 +417,236 @@ class AdminController {
     }
     
     /**
+     * Affiche la liste des réalisateurs pour l'administration
+     */
+    public function realisateurs() {
+        $this->checkAdmin();
+        $realisateurs = $this->realisateurModele->getAllRealisateurs();
+        
+        $data_page = [
+            "page_description" => "Administration des réalisateurs",
+            "page_title" => "Administration des réalisateurs",
+            "realisateurs" => $realisateurs,
+            "css" => ["admin.css"],
+            "js" => ["admin.js"],
+            "view" => [
+                "vues/front/header.php",
+                "vues/admin/realisateurs.php",
+                "vues/front/footer.php"
+            ],
+            "template" => "vues/front/layout.php"
+        ];
+        
+        $this->genererPage($data_page);
+    }
+    
+    /**
+     * Affiche le formulaire d'ajout de réalisateur
+     */
+    public function addRealisateur() {
+        $this->checkAdmin();
+        
+        $data_page = [
+            "page_description" => "Ajouter un réalisateur",
+            "page_title" => "Ajouter un réalisateur",
+            "css" => ["admin.css"],
+            "js" => ["admin.js"],
+            "view" => [
+                "vues/front/header.php",
+                "vues/admin/addRealisateur.php",
+                "vues/front/footer.php"
+            ],
+            "template" => "vues/front/layout.php"
+        ];
+        
+        $this->genererPage($data_page);
+    }
+    
+    /**
+     * Traite le formulaire d'ajout de réalisateur
+     */
+    public function saveRealisateur() {
+        $this->checkAdmin();
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . URL . 'admin/realisateurs');
+            exit();
+        }
+        
+        // Récupérer les données du formulaire
+        $nom = isset($_POST['nom']) ? trim($_POST['nom']) : '';
+        $prenom = isset($_POST['prenom']) ? trim($_POST['prenom']) : '';
+        $dateNaissance = isset($_POST['dateNaissance']) ? $_POST['dateNaissance'] : null;
+        $nationalite = isset($_POST['nationalite']) ? trim($_POST['nationalite']) : '';
+        
+        // Validation des données
+        $errors = [];
+        if (empty($nom)) {
+            $errors[] = "Le nom est obligatoire";
+        }
+        if (empty($prenom)) {
+            $errors[] = "Le prénom est obligatoire";
+        }
+        if (empty($dateNaissance)) {
+            $errors[] = "La date de naissance est obligatoire";
+        }
+        if (empty($nationalite)) {
+            $errors[] = "La nationalité est obligatoire";
+        }
+        
+        // S'il y a des erreurs, rediriger vers le formulaire avec les messages d'erreur
+        if (!empty($errors)) {
+            $_SESSION['errors'] = $errors;
+            $_SESSION['form_data'] = [
+                'nom' => $nom,
+                'prenom' => $prenom,
+                'dateNaissance' => $dateNaissance,
+                'nationalite' => $nationalite
+            ];
+            header('Location: ' . URL . 'admin/addRealisateur');
+            exit();
+        }
+        
+        // Toutes les validations sont passées, on peut enregistrer le réalisateur
+        try {
+            $result = $this->realisateurModele->addRealisateur($nom, $prenom, $dateNaissance, $nationalite);
+            
+            if ($result) {
+                $_SESSION['success'] = "Le réalisateur a été ajouté avec succès";
+            } else {
+                $_SESSION['error'] = "Une erreur est survenue lors de l'ajout du réalisateur";
+            }
+            
+            header('Location: ' . URL . 'admin/realisateurs');
+            exit();
+        } catch (Exception $e) {
+            $_SESSION['error'] = "Erreur : " . $e->getMessage();
+            header('Location: ' . URL . 'admin/realisateurs');
+            exit();
+        }
+    }
+    
+    /**
+     * Affiche le formulaire de modification d'un réalisateur
+     */
+    public function editRealisateur($idReal) {
+        $this->checkAdmin();
+        $realisateur = $this->realisateurModele->getRealisateurById($idReal);
+        
+        if (!$realisateur) {
+            $_SESSION['errors'] = ["Réalisateurs non trouvé"];
+            header('Location: ' . URL . 'admin/realisateurs');
+            exit();
+        }
+        
+        $data_page = [
+            "page_description" => "Modifier un réalisateur",
+            "page_title" => "Modifier un réalisateur",
+            "realisateur" => $realisateur,
+            "css" => ["admin.css"],
+            "js" => ["admin.js"],
+            "view" => [
+                "vues/front/header.php",
+                "vues/admin/editRealisateur.php",
+                "vues/front/footer.php"
+            ],
+            "template" => "vues/front/layout.php"
+        ];
+        
+        $this->genererPage($data_page);
+    }
+    
+    /**
+     * Traite le formulaire de modification de réalisateur
+     */
+    public function updateRealisateur() {
+        $this->checkAdmin();
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . URL . 'admin/realisateurs');
+            exit();
+        }
+        
+        $idReal = isset($_POST['idReal']) ? intval($_POST['idReal']) : 0;
+        
+        if ($idReal <= 0) {
+            $_SESSION['errors'] = ["Réalisateurs non valide"];
+            header('Location: ' . URL . 'admin/realisateurs');
+            exit();
+        }
+        
+        // Récupérer les données du formulaire
+        $nom = isset($_POST['nom']) ? trim($_POST['nom']) : '';
+        $prenom = isset($_POST['prenom']) ? trim($_POST['prenom']) : '';
+        $dateNaissance = isset($_POST['dateNaissance']) ? $_POST['dateNaissance'] : null;
+        $nationalite = isset($_POST['nationalite']) ? trim($_POST['nationalite']) : '';
+        
+        // Validation des données
+        $errors = [];
+        if (empty($nom)) {
+            $errors[] = "Le nom est obligatoire";
+        }
+        if (empty($prenom)) {
+            $errors[] = "Le prénom est obligatoire";
+        }
+        if (empty($dateNaissance)) {
+            $errors[] = "La date de naissance est obligatoire";
+        }
+        if (empty($nationalite)) {
+            $errors[] = "La nationalité est obligatoire";
+        }
+        
+        // Si erreurs, rediriger vers le formulaire avec les erreurs
+        if (!empty($errors)) {
+            $_SESSION['errors'] = $errors;
+            $_SESSION['form_data'] = $_POST; // Pour repopuler le formulaire
+            header('Location: ' . URL . 'admin/editRealisateur/' . $idReal);
+            exit();
+        }
+        
+        // Mettre à jour le réalisateur
+        $success = $this->realisateurModele->updateRealisateur($idReal, $nom, $prenom, $dateNaissance, $nationalite);
+        
+        if ($success) {
+            $_SESSION['success'] = "Le réalisateur a été mis à jour avec succès";
+        } else {
+            $_SESSION['errors'] = ["Une erreur est survenue lors de la mise à jour du réalisateur"];
+        }
+        
+        header('Location: ' . URL . 'admin/realisateurs');
+        exit();
+    }
+    
+    /**
+     * Supprime un réalisateur
+     */
+    public function deleteRealisateur($idReal) {
+        $this->checkAdmin();
+        // Vérifier si le réalisateur existe
+        $realisateur = $this->realisateurModele->getRealisateurById($idReal);
+        
+        if (!$realisateur) {
+            $_SESSION['errors'] = ["Réalisateurs non trouvé"];
+            header('Location: ' . URL . 'admin/realisateurs');
+            exit();
+        }
+        
+        try {
+            // Supprimer le réalisateur
+            $success = $this->realisateurModele->deleteRealisateur($idReal);
+            
+            if ($success) {
+                $_SESSION['success'] = "Le réalisateur a été supprimé avec succès";
+            } else {
+                $_SESSION['errors'] = ["Une erreur est survenue lors de la suppression du réalisateur"];
+            }
+        } catch (Exception $e) {
+            $_SESSION['errors'] = [$e->getMessage()];
+        }
+        
+        header('Location: ' . URL . 'admin/realisateurs');
+        exit();
+    }
+    
+    /**
      * Affiche le tableau de bord d'administration
      */
     public function dashboard() {

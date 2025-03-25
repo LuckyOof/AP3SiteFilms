@@ -56,23 +56,19 @@ class RealisateurModele extends PDOModel {
      * @param string $prenom Pru00e9nom du ru00e9alisateur
      * @param string $dateNaissance Date de naissance au format YYYY-MM-DD
      * @param string $nationalite Nationalitu00e9 du ru00e9alisateur
-     * @param string $biographie Biographie du ru00e9alisateur
-     * @param string $urlPhoto URL de la photo du ru00e9alisateur
      * @return int|false Identifiant du ru00e9alisateur ajoute ou false en cas d'u00e9chec
      * @throws Exception En cas d'erreur lors de l'ajout
      */
-    public function addRealisateur($nom, $prenom, $dateNaissance, $nationalite, $biographie = '', $urlPhoto = '') {
+    public function addRealisateur($nom, $prenom, $dateNaissance, $nationalite) {
         try {
-            $sql = "INSERT INTO Realisateur (nom, prenom, dateNaissance, nationalite, biographie, urlPhoto) 
-                   VALUES (:nom, :prenom, :dateNaissance, :nationalite, :biographie, :urlPhoto)";
+            $sql = "INSERT INTO Realisateur (nom, prenom, dateNaissance, nationalite) 
+                   VALUES (:nom, :prenom, :dateNaissance, :nationalite)";
             
             $stmt = $this->getBdd()->prepare($sql);
             $stmt->bindValue(':nom', $nom, PDO::PARAM_STR);
             $stmt->bindValue(':prenom', $prenom, PDO::PARAM_STR);
             $stmt->bindValue(':dateNaissance', $dateNaissance, PDO::PARAM_STR);
             $stmt->bindValue(':nationalite', $nationalite, PDO::PARAM_STR);
-            $stmt->bindValue(':biographie', $biographie, PDO::PARAM_STR);
-            $stmt->bindValue(':urlPhoto', $urlPhoto, PDO::PARAM_STR);
             $stmt->execute();
             
             return $this->getBdd()->lastInsertId();
@@ -89,16 +85,14 @@ class RealisateurModele extends PDOModel {
      * @param string $prenom Pru00e9nom du ru00e9alisateur
      * @param string $dateNaissance Date de naissance du ru00e9alisateur (format YYYY-MM-DD)
      * @param string $nationalite Nationalitu00e9 du ru00e9alisateur
-     * @param string $biographie Biographie du ru00e9alisateur
-     * @param string $urlPhoto URL de la photo du ru00e9alisateur
      * @return bool True si la mise u00e0 jour a ru00e9ussi, false sinon
      * @throws Exception En cas d'erreur lors de la mise u00e0 jour
      */
-    public function updateRealisateur($idReal, $nom, $prenom, $dateNaissance = null, $nationalite = null, $biographie = null, $urlPhoto = null) {
+    public function updateRealisateur($idReal, $nom, $prenom, $dateNaissance = null, $nationalite = null) {
         try {
             $sql = "UPDATE Realisateur 
                    SET nom = :nom, prenom = :prenom, dateNaissance = :dateNaissance, 
-                       nationalite = :nationalite, biographie = :biographie, urlPhoto = :urlPhoto 
+                       nationalite = :nationalite 
                    WHERE idReal = :idReal";
             
             $stmt = $this->getBdd()->prepare($sql);
@@ -107,8 +101,6 @@ class RealisateurModele extends PDOModel {
             $stmt->bindValue(':prenom', $prenom, PDO::PARAM_STR);
             $stmt->bindValue(':dateNaissance', $dateNaissance, PDO::PARAM_STR);
             $stmt->bindValue(':nationalite', $nationalite, PDO::PARAM_STR);
-            $stmt->bindValue(':biographie', $biographie, PDO::PARAM_STR);
-            $stmt->bindValue(':urlPhoto', $urlPhoto, PDO::PARAM_STR);
             
             return $stmt->execute();
         } catch (PDOException $e) {
