@@ -39,12 +39,12 @@
             
             <div class="form-row">
                 <div class="form-group half">
-                    <label for="coutTotal">Coût total (en $)</label>
+                    <label for="coutTotal">Coût total (en M$)</label>
                     <input type="number" id="coutTotal" name="coutTotal" min="0" step="0.01" value="<?= isset($_SESSION['form_data']['coutTotal']) ? htmlspecialchars($_SESSION['form_data']['coutTotal']) : '0' ?>">
                 </div>
                 
                 <div class="form-group half">
-                    <label for="boxOffice">Box Office (en $)</label>
+                    <label for="boxOffice">Box Office (en M$)</label>
                     <input type="number" id="boxOffice" name="boxOffice" min="0" step="0.01" value="<?= isset($_SESSION['form_data']['boxOffice']) ? htmlspecialchars($_SESSION['form_data']['boxOffice']) : '0' ?>">
                 </div>
             </div>

@@ -97,13 +97,13 @@
                         <?php if (!empty($film['coutTotal'])) : ?>
                             <div class="financial-item">
                                 <span class="financial-label">Budget :</span>
-                                <span class="financial-value"><?= number_format((float)$film['coutTotal'], 0, ',', ' ') ?> €</span>
+                                <span class="financial-value"><?= number_format((float)$film['coutTotal'], 0, ',', ' ') ?> M€</span>
                             </div>
                         <?php endif; ?>
                         <?php if (!empty($film['boxOffice'])) : ?>
                             <div class="financial-item">
                                 <span class="financial-label">Box Office :</span>
-                                <span class="financial-value"><?= number_format((float)$film['boxOffice'], 0, ',', ' ') ?> €</span>
+                                <span class="financial-value"><?= number_format((float)$film['boxOffice'], 0, ',', ' ') ?> M€</span>
                             </div>
                         <?php endif; ?>
                     </div>
