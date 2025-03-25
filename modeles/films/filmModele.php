@@ -1042,4 +1042,47 @@ class FilmModele extends PDOModel {
             throw new Exception("Erreur lors de la vérification de l'existence du film : " . $e->getMessage());
         }
     }
+
+    /**
+     * Compte le nombre total de films
+     * 
+     * @return int Nombre total de films
+     * @throws Exception En cas d'erreur lors du comptage
+     */
+    public function countFilms() {
+        try {
+            $sql = "SELECT COUNT(*) FROM Film";
+            $stmt = $this->getBdd()->prepare($sql);
+            $stmt->execute();
+            
+            return (int)$stmt->fetchColumn();
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors du comptage des films : " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Récupère les films récemment ajoutés
+     * 
+     * @param int $limit Nombre de films à récupérer
+     * @return array Liste des films récemment ajoutés
+     * @throws Exception En cas d'erreur lors de la récupération
+     */
+    public function getRecentFilms($limit = 5) {
+        try {
+            $sql = "SELECT f.*, r.nom as realisateurNom, r.prenom as realisateurPrenom 
+                   FROM Film f 
+                   LEFT JOIN Realisateur r ON f.idReal = r.idReal 
+                   ORDER BY f.dateSortie DESC 
+                   LIMIT :limit";
+            
+            $stmt = $this->getBdd()->prepare($sql);
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->execute();
+            
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors de la récupération des films récents : " . $e->getMessage());
+        }
+    }
 }

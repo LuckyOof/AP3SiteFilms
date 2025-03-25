@@ -896,40 +896,131 @@ class AdminController {
     }
     
     /**
-     * Affiche le tableau de bord d'administration
+     * Affiche la liste des acteurs pour l'administration
      */
-    public function dashboard() {
+    public function acteurs() {
         $this->checkAdmin();
+        $acteurs = $this->acteurModele->getAllActeurs();
+        
+        $data_page = [
+            "page_description" => "Administration des acteurs",
+            "page_title" => "Administration des acteurs",
+            "acteurs" => $acteurs,
+            "css" => ["admin.css"],
+            "js" => ["admin.js"],
+            "view" => [
+                "vues/front/header.php",
+                "vues/acteurs/index.php",
+                "vues/front/footer.php"
+            ],
+            "template" => "vues/front/layout.php"
+        ];
+        
+        $this->genererPage($data_page);
+    }
+    
+    /**
+     * Affiche le formulaire d'ajout d'acteur
+     */
+    public function addActeur() {
+        $this->checkAdmin();
+        
+        $data_page = [
+            "page_description" => "Ajouter un acteur",
+            "page_title" => "Ajouter un acteur",
+            "css" => ["admin.css", "form.css"],
+            "js" => ["form-validation.js"],
+            "view" => [
+                "vues/front/header.php",
+                "vues/acteurs/add.php",
+                "vues/front/footer.php"
+            ],
+            "template" => "vues/front/layout.php"
+        ];
+        
+        $this->genererPage($data_page);
+    }
+    
+    /**
+     * Traite le formulaire d'ajout d'acteur
+     */
+    public function saveActeur() {
+        $this->checkAdmin();
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . URL . 'admin/acteurs');
+            exit();
+        }
+        
         try {
-            // Récupérer les statistiques
-            $totalFilms = count($this->filmModele->getAllFilms());
-            $totalAvis = count($this->avisModele->getAllAvis());
-            $totalUtilisateurs = count($this->utilisateurModele->getAllUtilisateurs());
-            $totalGenres = count($this->genreModele->getAllGenres());
-            $totalActeurs = count($this->acteurModele->getAllActeurs());
-            $totalRealisateurs = count($this->realisateurModele->getAllRealisateurs());
-            
-            // Récupérer les films récemment ajoutés
-            $recentFilms = $this->filmModele->getLatestFilms(5);
-            
-            // Charger la vue
+            // Validation des données
+            if (empty($_POST['nom']) || empty($_POST['prenom'])) {
+                throw new Exception("Le nom et le prénom sont obligatoires");
+            }
+
+            // Traitement de la photo
+            $photo = null;
+            if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+                $uploadDir = ROOT_PATH . 'ressources/images/acteurs/';
+                $fileInfo = pathinfo($_FILES['photo']['name']);
+                $extension = strtolower($fileInfo['extension']);
+                
+                // Vérifier l'extension
+                $allowedExtensions = ['jpg', 'jpeg', 'png'];
+                if (!in_array($extension, $allowedExtensions)) {
+                    throw new Exception("Extension de fichier non autorisée. Seuls jpg, jpeg et png sont acceptés.");
+                }
+                
+                // Générer un nom unique
+                $photo = uniqid() . '.' . $extension;
+                $uploadFile = $uploadDir . $photo;
+                
+                if (!move_uploaded_file($_FILES['photo']['tmp_name'], $uploadFile)) {
+                    throw new Exception("Erreur lors de l'upload de la photo");
+                }
+            }
+
+            // Ajout de l'acteur
+            $idActeur = $this->acteurModele->addActeur(
+                $_POST['nom'],
+                $_POST['prenom'],
+                !empty($_POST['dateNaissance']) ? $_POST['dateNaissance'] : null,
+                !empty($_POST['nationalite']) ? $_POST['nationalite'] : null,
+                $photo
+            );
+
+            if ($idActeur) {
+                $_SESSION['success'] = "L'acteur a été ajouté avec succès";
+                header('Location: ' . URL . 'admin/acteurs');
+                exit();
+            }
+        } catch (Exception $e) {
+            $_SESSION['error'] = $e->getMessage();
+            header('Location: ' . URL . 'admin/addActeur');
+            exit();
+        }
+    }
+
+    /**
+     * Affiche le formulaire de modification d'acteur
+     */
+    public function editActeur($id) {
+        $this->checkAdmin();
+        
+        try {
+            $acteur = $this->acteurModele->getActeurById($id);
+            if (!$acteur) {
+                throw new Exception("L'acteur demandé n'existe pas");
+            }
+
             $data_page = [
-                "page_description" => "Tableau de bord d'administration",
-                "page_title" => "Tableau de bord d'administration",
-                "title" => "Tableau de bord d'administration",
-                "description" => "Tableau de bord d'administration du site de films",
-                "totalFilms" => $totalFilms,
-                "totalAvis" => $totalAvis,
-                "totalUtilisateurs" => $totalUtilisateurs,
-                "totalGenres" => $totalGenres,
-                "totalActeurs" => $totalActeurs,
-                "totalRealisateurs" => $totalRealisateurs,
-                "recentFilms" => $recentFilms,
-                "css" => ["admin.css"],
-                "js" => ["admin.js"],
+                "page_description" => "Modifier l'acteur",
+                "page_title" => "Modifier l'acteur",
+                "acteur" => $acteur,
+                "css" => ["admin.css", "form.css"],
+                "js" => ["form-validation.js"],
                 "view" => [
                     "vues/front/header.php",
-                    "vues/admin/dashboard.php",
+                    "vues/acteurs/edit.php",
                     "vues/front/footer.php"
                 ],
                 "template" => "vues/front/layout.php"
@@ -937,13 +1028,141 @@ class AdminController {
             
             $this->genererPage($data_page);
         } catch (Exception $e) {
-            $_SESSION['message'] = "Erreur lors du chargement du tableau de bord : " . $e->getMessage();
-            $_SESSION['message_type'] = "danger";
-            header("Location: " . URL);
+            $_SESSION['error'] = $e->getMessage();
+            header('Location: ' . URL . 'admin/acteurs');
             exit();
         }
     }
-    
+
+    /**
+     * Traite le formulaire de modification d'acteur
+     */
+    public function updateActeur($id) {
+        $this->checkAdmin();
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . URL . 'admin/acteurs');
+            exit();
+        }
+        
+        try {
+            $acteur = $this->acteurModele->getActeurById($id);
+            if (!$acteur) {
+                throw new Exception("L'acteur demandé n'existe pas");
+            }
+
+            // Validation des données
+            if (empty($_POST['nom']) || empty($_POST['prenom'])) {
+                throw new Exception("Le nom et le prénom sont obligatoires");
+            }
+
+            // Traitement de la photo
+            $photo = $acteur['photo']; // Garder l'ancienne photo par défaut
+            if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+                $uploadDir = ROOT_PATH . 'ressources/images/acteurs/';
+                $fileInfo = pathinfo($_FILES['photo']['name']);
+                $extension = strtolower($fileInfo['extension']);
+                
+                // Vérifier l'extension
+                $allowedExtensions = ['jpg', 'jpeg', 'png'];
+                if (!in_array($extension, $allowedExtensions)) {
+                    throw new Exception("Extension de fichier non autorisée. Seuls jpg, jpeg et png sont acceptés.");
+                }
+                
+                // Générer un nom unique
+                $photo = uniqid() . '.' . $extension;
+                $uploadFile = $uploadDir . $photo;
+                
+                if (!move_uploaded_file($_FILES['photo']['tmp_name'], $uploadFile)) {
+                    throw new Exception("Erreur lors de l'upload de la photo");
+                }
+
+                // Supprimer l'ancienne photo si elle existe
+                if ($acteur['photo'] && file_exists($uploadDir . $acteur['photo'])) {
+                    unlink($uploadDir . $acteur['photo']);
+                }
+            }
+
+            // Mise à jour de l'acteur
+            $success = $this->acteurModele->updateActeur(
+                $id,
+                $_POST['nom'],
+                $_POST['prenom'],
+                !empty($_POST['dateNaissance']) ? $_POST['dateNaissance'] : null,
+                !empty($_POST['nationalite']) ? $_POST['nationalite'] : null,
+                $photo
+            );
+
+            if ($success) {
+                $_SESSION['success'] = "L'acteur a été modifié avec succès";
+                header('Location: ' . URL . 'admin/acteurs');
+                exit();
+            }
+        } catch (Exception $e) {
+            $_SESSION['error'] = $e->getMessage();
+            header('Location: ' . URL . 'admin/editActeur/' . $id);
+            exit();
+        }
+    }
+
+    /**
+     * Supprime un acteur
+     */
+    public function deleteActeur($id) {
+        $this->checkAdmin();
+        
+        try {
+            if ($this->acteurModele->deleteActeur($id)) {
+                $_SESSION['success'] = "L'acteur a été supprimé avec succès";
+            } else {
+                throw new Exception("Erreur lors de la suppression de l'acteur");
+            }
+        } catch (Exception $e) {
+            $_SESSION['error'] = $e->getMessage();
+        }
+        
+        header('Location: ' . URL . 'admin/acteurs');
+        exit();
+    }
+
+    /**
+     * Affiche le tableau de bord d'administration
+     */
+    public function dashboard() {
+        $this->checkAdmin();
+        
+        $totalFilms = $this->filmModele->countFilms();
+        $totalGenres = $this->genreModele->countGenres();
+        $totalActeurs = $this->acteurModele->countActeurs();
+        $totalRealisateurs = $this->realisateurModele->countRealisateurs();
+        $totalAvis = $this->avisModele->countAvis();
+        $totalUtilisateurs = $this->utilisateurModele->countUtilisateurs();
+        
+        // Récupérer les films récemment ajoutés
+        $recentFilms = $this->filmModele->getRecentFilms(5);
+        
+        $data_page = [
+            "page_description" => "Tableau de bord d'administration",
+            "page_title" => "Administration - Tableau de bord",
+            "totalFilms" => $totalFilms,
+            "totalGenres" => $totalGenres,
+            "totalActeurs" => $totalActeurs,
+            "totalRealisateurs" => $totalRealisateurs,
+            "totalAvis" => $totalAvis,
+            "totalUtilisateurs" => $totalUtilisateurs,
+            "recentFilms" => $recentFilms,
+            "css" => ["admin.css", "dashboard.css"],
+            "js" => ["admin.js"],
+            "view" => [
+                "vues/front/header.php",
+                "vues/admin/dashboard.php",
+                "vues/front/footer.php"
+            ],
+            "template" => "vues/front/layout.php"
+        ];
+        
+        $this->genererPage($data_page);
+    }
+
     /**
      * Génère la page avec le template
      */

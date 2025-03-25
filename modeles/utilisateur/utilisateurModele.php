@@ -190,4 +190,22 @@ class UtilisateurModele extends PDOModel {
         $req->execute();
         return (int)$req->fetchColumn() > 0;
     }
+
+    /**
+     * Compte le nombre total d'utilisateurs
+     * 
+     * @return int Nombre total d'utilisateurs
+     * @throws Exception En cas d'erreur lors du comptage
+     */
+    public function countUtilisateurs() {
+        try {
+            $sql = "SELECT COUNT(*) FROM utilisateur";
+            $stmt = $this->getBdd()->prepare($sql);
+            $stmt->execute();
+            
+            return (int)$stmt->fetchColumn();
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors du comptage des utilisateurs : " . $e->getMessage());
+        }
+    }
 }

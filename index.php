@@ -197,6 +197,24 @@
                             throw new Exception("La page d'administration n'existe pas");
                         }
                     }
+                    else if($url[1] === 'acteurs') {
+                        $adminController->acteurs();
+                    }
+                    else if($url[1] === 'addActeur') {
+                        $adminController->addActeur();
+                    }
+                    else if($url[1] === 'saveActeur') {
+                        $adminController->saveActeur();
+                    }
+                    else if($url[1] === 'editActeur' && isset($url[2])) {
+                        $adminController->editActeur($url[2]);
+                    }
+                    else if($url[1] === 'updateActeur' && isset($url[2])) {
+                        $adminController->updateActeur($url[2]);
+                    }
+                    else if($url[1] === 'deleteActeur' && isset($url[2])) {
+                        $adminController->deleteActeur($url[2]);
+                    }
                     else {
                         throw new Exception("La page d'administration n'existe pas");
                     }
