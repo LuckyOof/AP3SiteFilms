@@ -1,3 +1,6 @@
+<head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
 <div class="container mt-4">
     <div class="row">
         <div class="col-12">
@@ -9,7 +12,7 @@
                     <h5 class="mb-0">Filtres</h5>
                 </div>
                 <div class="card-body">
-                    <form action="index.php?controller=films&action=classement" method="GET" id="filter-form" class="row">
+                    <form action="classement" method="POST" id="filter-form" class="row">
                         <input type="hidden" name="controller" value="films">
                         <input type="hidden" name="action" value="classement">
                         <!-- Type de classement -->
@@ -53,7 +56,7 @@
                             <select name="genre" id="genre" class="form-select">
                                 <option value="">Tous les genres</option>
                                 <?php foreach ($filter_options['genres'] as $genre): ?>
-                                    <option value="<?= $genre ?>" <?= isset($_GET['genre']) && $_GET['genre'] == $genre ? 'selected' : '' ?>>
+                                    <option value="<?= $genre ?>" <?= isset($_POST['genre']) && $_POST['genre'] == $genre ? 'selected' : '' ?>>
                                         <?= $genre ?>
                                     </option>
                                 <?php endforeach; ?>
@@ -65,7 +68,7 @@
                             <select name="annee" id="annee" class="form-select">
                                 <option value="">Toutes les années</option>
                                 <?php foreach ($filter_options['annees'] as $annee): ?>
-                                    <option value="<?= $annee ?>" <?= isset($_GET['annee']) && $_GET['annee'] == $annee ? 'selected' : '' ?>>
+                                    <option value="<?= $annee ?>" <?= isset($_POST['annee']) && $_POST['annee'] == $annee ? 'selected' : '' ?>>
                                         <?= $annee ?>
                                     </option>
                                 <?php endforeach; ?>
@@ -77,7 +80,7 @@
                             <select name="langue" id="langue" class="form-select">
                                 <option value="">Toutes les langues</option>
                                 <?php foreach ($filter_options['langues'] as $langue): ?>
-                                    <option value="<?= $langue ?>" <?= isset($_GET['langue']) && $_GET['langue'] == $langue ? 'selected' : '' ?>>
+                                    <option value="<?= $langue ?>" <?= isset($_POST['langue']) && $_POST['langue'] == $langue ? 'selected' : '' ?>>
                                         <?= $langue ?>
                                     </option>
                                 <?php endforeach; ?>

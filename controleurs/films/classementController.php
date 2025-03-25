@@ -13,20 +13,20 @@ class ClassementController {
 
     public function index() {
         // Récupérer les paramètres de tri et de filtrage
-        $sortBy = isset($_GET['sort']) ? $_GET['sort'] : 'note';
-        $sortOrder = isset($_GET['order']) ? $_GET['order'] : 'DESC';
-        $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 10;
+        $sortBy = isset($_POST['sort']) ? $_POST['sort'] : 'note';
+        $sortOrder = isset($_POST['order']) ? $_POST['order'] : 'DESC';
+        $limit = isset($_POST['limit']) ? intval($_POST['limit']) : 10;
         
         // Filtres
         $filters = [];
-        if (isset($_GET['genre']) && !empty($_GET['genre'])) {
-            $filters['genre'] = $_GET['genre'];
+        if (isset($_POST['genre']) && !empty($_POST['genre'])) {
+            $filters['genre'] = $_POST['genre'];
         }
-        if (isset($_GET['annee']) && !empty($_GET['annee'])) {
-            $filters['annee'] = intval($_GET['annee']);
+        if (isset($_POST['annee']) && !empty($_POST['annee'])) {
+            $filters['annee'] = intval($_POST['annee']);
         }
-        if (isset($_GET['langue']) && !empty($_GET['langue'])) {
-            $filters['langue'] = $_GET['langue'];
+        if (isset($_POST['langue']) && !empty($_POST['langue'])) {
+            $filters['langue'] = $_POST['langue'];
         }
         
         // Récupérer les films classés selon les critères
