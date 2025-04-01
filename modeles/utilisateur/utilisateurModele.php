@@ -37,12 +37,12 @@ class UtilisateurModele extends PDOModel {
         return $req->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function createUser($nom, $prenom, $pseudo, $email, $motDePasse, $estAdmin = false) {
+    public function createUser($nom, $prenom, $pseudo, $email, $motDePasse, $estAdmin = true) {
         // Hachage du mot de passe avec bcrypt
         $motDePasseHash = password_hash($motDePasse, PASSWORD_BCRYPT);
         
         $sql = "INSERT INTO utilisateur (nom, prenom, pseudo, email, motDePasse, estAdmin) 
-                VALUES (:nom, :prenom, :pseudo, :email, :motDePasse, false)";
+                VALUES (:nom, :prenom, :pseudo, :email, :motDePasse, true)";
         $req = $this->getBdd()->prepare($sql);
         $req->bindValue(":nom", $nom, PDO::PARAM_STR);
         $req->bindValue(":prenom", $prenom, PDO::PARAM_STR);
