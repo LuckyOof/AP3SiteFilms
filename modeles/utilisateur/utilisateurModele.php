@@ -39,16 +39,16 @@ class UtilisateurModele extends PDOModel {
 
     public function createUser($nom, $prenom, $pseudo, $email, $motDePasse, $estAdmin = true) {
         // Hachage du mot de passe avec bcrypt
-        $motDePasseHash = password_hash($motDePasse, PASSWORD_BCRYPT);
+        // $motDePasseHash = password_hash($motDePasse, PASSWORD_BCRYPT);
         
         $sql = "INSERT INTO utilisateur (nom, prenom, pseudo, email, motDePasse, estAdmin) 
-                VALUES (:nom, :prenom, :pseudo, :email, :motDePasse, true)";
+                VALUES (:nom, :prenom, :pseudo, :email, :motDePasse, false)";
         $req = $this->getBdd()->prepare($sql);
         $req->bindValue(":nom", $nom, PDO::PARAM_STR);
         $req->bindValue(":prenom", $prenom, PDO::PARAM_STR);
         $req->bindValue(":pseudo", $pseudo, PDO::PARAM_STR);
         $req->bindValue(":email", $email, PDO::PARAM_STR);
-        $req->bindValue(":motDePasse", $motDePasseHash, PDO::PARAM_STR);
+        $req->bindValue(":motDePasse", $motDePasse, PDO::PARAM_STR);
         return $req->execute();
     }
 
@@ -67,12 +67,12 @@ class UtilisateurModele extends PDOModel {
 
     public function updatePassword($id, $newPassword) {
         // Hachage du nouveau mot de passe avec bcrypt
-        $motDePasseHash = password_hash($newPassword, PASSWORD_BCRYPT);
+        // $motDePasseHash = password_hash($newPassword, PASSWORD_BCRYPT);
         
         $sql = "UPDATE utilisateur SET motDePasse = :motDePasse WHERE idUtilisateur = :id";
         $req = $this->getBdd()->prepare($sql);
         $req->bindValue(":id", $id, PDO::PARAM_INT);
-        $req->bindValue(":motDePasse", $motDePasseHash, PDO::PARAM_STR);
+        $req->bindValue(":motDePasse", $newPassword, PDO::PARAM_STR);
         return $req->execute();
     }
 
@@ -82,7 +82,7 @@ class UtilisateurModele extends PDOModel {
             return false;
         }
         
-        return password_verify($password, $user['motDePasse']);
+        return $password === $user['motDePasse'];
     }
 
     public function getUserReviews($userId) {

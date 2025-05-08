@@ -430,16 +430,16 @@ class FilmModele extends PDOModel {
                     GROUP_CONCAT(DISTINCT g2.libelle) as genres,
                     COALESCE(AVG(a.note), 0) as note_moyenne,
                     COUNT(a.note) as nombre_avis,
-                    f.recettes as recettes
+                    f.boxOffice as recettes
                     FROM Film f 
                     LEFT JOIN Realisateur r ON f.idReal = r.idReal
                     LEFT JOIN AppartenirGenre ag2 ON f.idFilm = ag2.idFilm
                     LEFT JOIN Genre g2 ON ag2.idGenre = g2.idGenre
                     LEFT JOIN Avis a ON f.idFilm = a.idFilm
                     $joinClause
-                    WHERE f.recettes IS NOT NULL AND f.recettes > 0 $whereClause
+                    WHERE f.boxOffice IS NOT NULL AND f.boxOffice > 0 $whereClause
                     GROUP BY f.idFilm, r.nom, r.prenom
-                    ORDER BY f.recettes $sortOrder
+                    ORDER BY f.boxOffice $sortOrder
                     LIMIT :limit";
             
             $stmt = $this->getBdd()->prepare($sql);

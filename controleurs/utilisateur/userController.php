@@ -161,11 +161,14 @@ class UserController {
         $langues = $this->filmModele->getDistinctValues('langueVO');
         $annees = $this->filmModele->getDistinctValues('YEAR(dateSortie)');
 
+        $reviews = $this->utilisateurModele->getUserReviews($userId);
+
         $data_page = [
             "page_description" => "Page profil",
             "page_title" => "Page profil",
             "user" => $_SESSION['user'],
             "watchlist" => $watchlist,
+            "reviews" => $reviews,
             "filter_options" => [
                 "genres" => $genres,
                 "langues" => $langues,
@@ -214,7 +217,7 @@ class UserController {
                     $error = "Les nouveaux mots de passe ne correspondent pas";
                 } else {
                     $user = $this->utilisateurModele->getUserById($userId);
-                    if (password_verify($currentPassword, $user["motDePasse"])) {
+                    if ($currentPassword === $user["motDePasse"]) {
                         $passwordErrors = $this->validatePassword($newPassword);
                         
                         if (!empty($passwordErrors)) {

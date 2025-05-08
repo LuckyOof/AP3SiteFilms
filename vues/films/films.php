@@ -57,15 +57,15 @@
 
                     <div class="film-overlay">
                         <div class="film-actions">
-                            <a href="<?= URL ?>films/<?= $film['idFilm'] ?>" class="btn-details">
+                            <a href="<?= URL ?>index.php?page=films/show&id=<?= $film['idFilm'] ?>" class="btn-details">
                                 <i class="fas fa-info-circle"></i> Détails
                             </a>
-                            <?php if (isset($_SESSION['user'])): ?>
+                            <!-- <?php if (isset($_SESSION['user'])): ?>
                                 <button class="btn-favorite <?= isset($film['in_watchlist']) && $film['in_watchlist'] ? 'active' : '' ?>"
                                         data-film-id="<?= $film['idFilm'] ?>">
                                     <i class="<?= isset($film['in_watchlist']) && $film['in_watchlist'] ? 'fas' : 'far' ?> fa-heart"></i>
                                 </button>
-                            <?php endif; ?>
+                            <?php endif; ?> -->
                         </div>
                     </div>
                 </div>

@@ -163,7 +163,8 @@
                     <form id="avisForm" action="<?= URL ?>index.php?page=films/ajouterAvis" method="post">
                         <input type="hidden" name="idFilm" value="<?= $film['idFilm'] ?>">
                         <input type="hidden" id="avisNote" name="note" value="<?= $avisUtilisateur ? $avisUtilisateur['note'] : '0' ?>">
-                        
+                        <input type="hidden" id="idAvis" name="idAvis" value="<?= $avisUtilisateur ? $avisUtilisateur['numAvis'] : null ?>">
+
                         <div class="avis-stars">
                             <?php for ($i = 1; $i <= 5; $i++) : ?>
                                 <span class="avis-star <?= ($avisUtilisateur && $avisUtilisateur['note'] >= $i) ? 'selected' : '' ?>" data-rating="<?= $i ?>">

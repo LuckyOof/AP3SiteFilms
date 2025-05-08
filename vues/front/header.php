@@ -94,9 +94,9 @@
                             <!-- <a href="<?= URL ?>watchlist" class="sidebar-item">
                                 <i class="fas fa-list"></i> Ma Watchlist
                             </a> -->
-                            <a href="<?= URL ?>reviews" class="sidebar-item">
+                            <!-- <a href="<?= URL ?>reviews" class="sidebar-item">
                                 <i class="fas fa-star"></i> Mes Avis
-                            </a>
+                            </a> -->
                             
                             <?php if($isAdmin): ?>
                             <div class="sidebar-divider"></div>

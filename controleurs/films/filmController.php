@@ -494,6 +494,7 @@ class FilmController {
         $idFilm = isset($_POST['idFilm']) ? intval($_POST['idFilm']) : 0;
         $note = isset($_POST['note']) ? floatval($_POST['note']) : 0;
         $commentaire = isset($_POST['commentaire']) ? trim($_POST['commentaire']) : '';
+        $idAvis = isset($_POST['idAvis']) ? trim($_POST['idAvis']) : null;
 
         // Valider les données
         if ($idFilm <= 0) {
@@ -510,7 +511,12 @@ class FilmController {
         $idUtilisateur = $_SESSION['user']['id'];
         
         try {
-            $resultat = $this->avisModele->addAvis($idFilm, $idUtilisateur, $note, $commentaire);
+            if($idAvis){
+                $resultat = $this->avisModele->updateAvis($idAvis, $note, $commentaire);
+            }
+            else{
+                $resultat = $this->avisModele->addAvis($idFilm, $idUtilisateur, $note, $commentaire);
+            }
             
             if ($resultat) {
                 // Récupérer les avis mis à jour

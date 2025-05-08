@@ -104,11 +104,11 @@
     </form>
 
     <!-- Section Watchlist -->
-    <div class="profile-section watchlist-section">
-        <h2>Ma Watchlist</h2>
+    <!-- <div class="profile-section watchlist-section">
+        <h2>Ma Watchlist</h2> -->
 
         <!-- Filtres et tri -->
-        <div class="watchlist-controls">
+        <!-- <div class="watchlist-controls">
             <form id="watchlistFilters" method="POST">
                 <div class="filters">
                     <div class="filter-group">
@@ -174,10 +174,10 @@
                     <a href="?<?= http_build_query(['page' => 'profile']) ?>" class="reset-filters">Réinitialiser</a>
                 </div>
             </form>
-        </div>
+        </div> -->
 
         <!-- Liste des films -->
-        <?php if (empty($watchlist)): ?>
+        <!-- <?php if (empty($watchlist)): ?>
             <div class="no-watchlist">
                 <i class="fas fa-film"></i>
                 <p>Votre watchlist est vide</p>
@@ -205,7 +205,7 @@
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
-    </div>
+    </div> -->
 
     <!-- Indicateur de chargement -->
     <div class="loading-overlay">
@@ -414,3 +414,4 @@ async function removeFromWatchlist(filmId, button) {
     }
 }
 </script>
+
